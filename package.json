@@ -33,7 +33,6 @@
     "node": ">=18.10",
     "pnpm": ">=9.1"
   },
-  "packageManager": "pnpm@11.5.1",
   "main": "dist/nodes/Close/Close.node.js",
   "scripts": {
     "build": "tsc && gulp build:icons",
