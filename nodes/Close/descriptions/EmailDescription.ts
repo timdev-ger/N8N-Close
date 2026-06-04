@@ -187,6 +187,24 @@ export const emailFields: INodeProperties[] = [
 				description: 'Date and time to send the email (required if status is scheduled)',
 			},
 			{
+				displayName: 'Date Created',
+				name: 'dateCreated',
+				type: 'dateTime',
+				default: '',
+				description: 'Override when the email activity happened',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the email to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Followup Date',
 				name: 'followupDate',
 				type: 'dateTime',
@@ -332,6 +350,17 @@ export const emailFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Subject of the email',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the update to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 		],
 	},

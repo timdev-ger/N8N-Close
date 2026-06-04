@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-close-crm",
-  "version": "1.6.4",
+  "version": "1.7.0",
   "description": "N8N community node for Close CRM integration with comprehensive lead, opportunity, task, note, call management, and enhanced triggers for workflow automation",
   "keywords": [
     "n8n-community-node-package",
@@ -33,7 +33,6 @@
     "node": ">=18.10",
     "pnpm": ">=9.1"
   },
-  "packageManager": "pnpm@10.18.3",
   "main": "dist/nodes/Close/Close.node.js",
   "scripts": {
     "build": "tsc && gulp build:icons",
@@ -59,22 +58,23 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.12.2",
-    "@typescript-eslint/eslint-plugin": "^8.58.2",
-    "@typescript-eslint/parser": "^8.58.2",
-    "eslint": "^9.39.4",
+    "@types/node": "^25.9.1",
+    "@typescript-eslint/eslint-plugin": "^8.60.1",
+    "@typescript-eslint/parser": "^8.60.1",
+    "eslint": "^10.4.1",
     "eslint-plugin-n8n-nodes-base": "^1.16.6",
     "gulp": "^5.0.1",
-    "jest": "^30.3.0",
-    "n8n-workflow": "^2.13.1",
+    "@swc/core": "^1.15.40",
+    "@swc/jest": "^0.2.39",
+    "jest": "^30.4.2",
+    "n8n-workflow": "^2.16.0",
     "prettier": "^3.8.3",
-    "ts-jest": "^29.4.9",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
   },
   "dependencies": {
-    "@portabletext/to-html": "^3.0.0"
+    "@portabletext/to-html": "^5.0.2"
   }
 }

@@ -394,6 +394,17 @@ export const contactFields: INodeProperties[] = [
 				description: 'Job title of the contact',
 			},
 			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the change to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Emails',
 				name: 'emails',
 				type: 'fixedCollection',
@@ -419,6 +430,26 @@ export const contactFields: INodeProperties[] = [
 									{
 										name: 'Personal',
 										value: 'personal',
+									},
+									{
+										name: 'Direct',
+										value: 'direct',
+									},
+									{
+										name: 'Mobile',
+										value: 'mobile',
+									},
+									{
+										name: 'Home',
+										value: 'home',
+									},
+									{
+										name: 'Fax',
+										value: 'fax',
+									},
+									{
+										name: 'URL',
+										value: 'url',
 									},
 									{
 										name: 'Other',
@@ -468,12 +499,20 @@ export const contactFields: INodeProperties[] = [
 										value: 'mobile',
 									},
 									{
+										name: 'Direct',
+										value: 'direct',
+									},
+									{
 										name: 'Home',
 										value: 'home',
 									},
 									{
 										name: 'Fax',
 										value: 'fax',
+									},
+									{
+										name: 'URL',
+										value: 'url',
 									},
 									{
 										name: 'Other',
@@ -681,6 +720,17 @@ export const contactFields: INodeProperties[] = [
 				description: 'Job title of the contact',
 			},
 			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the change to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Emails',
 				name: 'emails',
 				type: 'fixedCollection',
@@ -706,6 +756,26 @@ export const contactFields: INodeProperties[] = [
 									{
 										name: 'Personal',
 										value: 'personal',
+									},
+									{
+										name: 'Direct',
+										value: 'direct',
+									},
+									{
+										name: 'Mobile',
+										value: 'mobile',
+									},
+									{
+										name: 'Home',
+										value: 'home',
+									},
+									{
+										name: 'Fax',
+										value: 'fax',
+									},
+									{
+										name: 'URL',
+										value: 'url',
 									},
 									{
 										name: 'Other',
@@ -755,12 +825,20 @@ export const contactFields: INodeProperties[] = [
 										value: 'mobile',
 									},
 									{
+										name: 'Direct',
+										value: 'direct',
+									},
+									{
 										name: 'Home',
 										value: 'home',
 									},
 									{
 										name: 'Fax',
 										value: 'fax',
+									},
+									{
+										name: 'URL',
+										value: 'url',
 									},
 									{
 										name: 'Other',

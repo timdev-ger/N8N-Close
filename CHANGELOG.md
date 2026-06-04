@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-06-04
+
+### Added
+- **User attribution** (`user_id`) field on Lead create/update, Contact create/update, Note create/update, Call create/update, Email create/update, SMS create/update, and Custom Activity create/update — lets you post activities on behalf of a specific team member (closes #19).
+- **Date Created** (`date_created`) override on Note create, Custom Activity create, Call create, Email create, and SMS create — allows back-dating activities to the exact time an event occurred (closes #20).
+- **Missing contact type options** — email type now includes `Direct`, `Mobile`, `Home`, `Fax`, and `URL`; phone type now includes `Direct` and `URL`, matching all types available in Close CRM (closes #17).
+- **Add / Remove action for multi-value custom fields** — Choice (Multiple), User (Multiple), and Contact (Multiple) custom fields now expose an **Action** selector (Replace / Add / Remove, default: Replace). Selecting Add or Remove appends `.add` / `.remove` to the API key (e.g. `custom.cf_xxx.add`), enabling single-value mutations without a prior Get (closes #18).
+
+### Changed
+- Replaced `ts-jest` with `@swc/jest` for test compilation — compatible with Jest 30.4.x and significantly faster.
+
+### Technical
+- Bumped all dev dependencies to latest: `@types/node` ^25.9.1, `eslint` ^10.4.1, `typescript` ^6.0.3, `jest` ^30.4.2, `@swc/core` ^1.15.40, `@swc/jest` ^0.2.39, `pnpm` 11.5.1, `@portabletext/to-html` ^5.0.2.
+- Added `types: ['jest', 'node']` to jest transform config for TypeScript 6 compatibility.
+- All 194 tests green across 4 suites.
+
 ## [1.6.4] - 2026-04-30
 
 ### Added

@@ -455,6 +455,9 @@ export class Close implements INodeType {
 						if (hasValue(additionalFields.statusId) && additionalFields.statusId !== '') {
 							body.status_id = additionalFields.statusId;
 						}
+						if (hasValue(additionalFields.userId) && additionalFields.userId !== '') {
+							body.user_id = additionalFields.userId;
+						}
 						if (hasValue(additionalFields.url) && additionalFields.url !== '') {
 							body.url = additionalFields.url;
 						}
@@ -820,6 +823,9 @@ export class Close implements INodeType {
 						if (hasValue(updateFields.statusId) && updateFields.statusId !== '') {
 							body.status_id = updateFields.statusId;
 						}
+						if (hasValue(updateFields.userId) && updateFields.userId !== '') {
+							body.user_id = updateFields.userId;
+						}
 						if (hasValue(updateFields.url) && updateFields.url !== '') {
 							body.url = updateFields.url;
 						}
@@ -1058,6 +1064,9 @@ export class Close implements INodeType {
 						if (additionalFields.title) {
 							body.title = additionalFields.title;
 						}
+						if (additionalFields.userId) {
+							body.user_id = additionalFields.userId;
+						}
 
 						// Add emails if provided
 						if (additionalFields.emails) {
@@ -1175,6 +1184,9 @@ export class Close implements INodeType {
 						}
 						if (updateFields.title) {
 							body.title = updateFields.title;
+						}
+						if (updateFields.userId) {
+							body.user_id = updateFields.userId;
 						}
 
 						// Add emails if provided
@@ -1748,6 +1760,15 @@ export class Close implements INodeType {
 							body.note = note;
 						}
 
+						const dateCreated = this.getNodeParameter('dateCreated', i, '') as string;
+						if (dateCreated) {
+							body.date_created = dateCreated;
+						}
+						const userId = this.getNodeParameter('userId', i, '') as string;
+						if (userId) {
+							body.user_id = userId;
+						}
+
 						responseData = await closeApiRequest.call(this, 'POST', '/activity/note/', body);
 					}
 
@@ -1796,6 +1817,10 @@ export class Close implements INodeType {
 							if (note) {
 								body.note = note;
 							}
+						}
+						const userId = this.getNodeParameter('userId', i, '') as string;
+						if (userId) {
+							body.user_id = userId;
 						}
 
 						responseData = await closeApiRequest.call(
@@ -1878,6 +1903,12 @@ export class Close implements INodeType {
 						if (hasValue(additionalFields.status) && additionalFields.status !== '') {
 							body.status = additionalFields.status;
 						}
+						if (hasValue(additionalFields.dateCreated) && additionalFields.dateCreated !== '') {
+							body.date_created = additionalFields.dateCreated;
+						}
+						if (hasValue(additionalFields.userId) && additionalFields.userId !== '') {
+							body.user_id = additionalFields.userId;
+						}
 
 						responseData = await closeApiRequest.call(this, 'POST', '/activity/call/', body);
 					}
@@ -1923,6 +1954,9 @@ export class Close implements INodeType {
 						}
 						if (updateFields.outcomeId) {
 							body.outcome_id = updateFields.outcomeId;
+						}
+						if (updateFields.userId) {
+							body.user_id = updateFields.userId;
 						}
 
 						responseData = await closeApiRequest.call(
@@ -2015,6 +2049,9 @@ export class Close implements INodeType {
 						}
 						if (hasValue(additionalFields.dateScheduled) && additionalFields.dateScheduled !== '') {
 							body.date_scheduled = additionalFields.dateScheduled;
+						}
+						if (hasValue(additionalFields.dateCreated) && additionalFields.dateCreated !== '') {
+							body.date_created = additionalFields.dateCreated;
 						}
 						if (hasValue(additionalFields.followupDate) && additionalFields.followupDate !== '') {
 							body.followup_date = additionalFields.followupDate;
@@ -2329,6 +2366,9 @@ export class Close implements INodeType {
 						if (hasValue(additionalFields.dateScheduled) && additionalFields.dateScheduled !== '') {
 							body.date_scheduled = additionalFields.dateScheduled;
 						}
+						if (hasValue(additionalFields.dateCreated) && additionalFields.dateCreated !== '') {
+							body.date_created = additionalFields.dateCreated;
+						}
 						if (hasValue(additionalFields.direction) && additionalFields.direction !== '') {
 							body.direction = additionalFields.direction;
 						}
@@ -2444,6 +2484,7 @@ export class Close implements INodeType {
 						const leadId = this.getNodeParameter('leadId', i) as string;
 						const customActivityTypeId = this.getNodeParameter('customActivityTypeId', i) as string;
 						const status = this.getNodeParameter('status', i, '') as string;
+						const dateCreated = this.getNodeParameter('dateCreated', i, '') as string;
 
 						if (!leadId) {
 							throw new NodeOperationError(
@@ -2465,6 +2506,9 @@ export class Close implements INodeType {
 
 						if (status) {
 							body.status = status;
+						}
+						if (dateCreated) {
+							body.date_created = dateCreated;
 						}
 
 						// Add custom fields from the new structure

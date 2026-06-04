@@ -95,6 +95,17 @@ export const leadFields: INodeProperties[] = [
 					'The status of the lead. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the change to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'URL',
 				name: 'url',
 				type: 'string',
@@ -702,6 +713,17 @@ export const leadFields: INodeProperties[] = [
 				default: '',
 				description:
 					'The status of the lead. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the change to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'URL',

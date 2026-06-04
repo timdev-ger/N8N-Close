@@ -101,6 +101,24 @@ export const callFields: INodeProperties[] = [
 				description: 'Duration of the call in seconds',
 			},
 			{
+				displayName: 'Date Created',
+				name: 'dateCreated',
+				type: 'dateTime',
+				default: '',
+				description: 'Override when the call activity happened',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the call to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Note (HTML)',
 				name: 'noteHtml',
 				type: 'string',
@@ -233,6 +251,17 @@ export const callFields: INodeProperties[] = [
 				type: 'string',
 				default: '',
 				description: 'Custom outcome ID for the call',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the update to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 		],
 	},
