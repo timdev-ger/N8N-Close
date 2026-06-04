@@ -124,6 +124,36 @@ export const noteFields: INodeProperties[] = [
 		required: true,
 		description: 'The plain text content of the note',
 	},
+	{
+		displayName: 'Date Created',
+		name: 'dateCreated',
+		type: 'dateTime',
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		description: 'Override when the note activity happened',
+	},
+	{
+		displayName: 'User',
+		name: 'userId',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getUsers',
+		},
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		description:
+			'User to attribute the note to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+	},
 	// Fields for Delete operation
 	{
 		displayName: 'Note ID',
@@ -227,6 +257,23 @@ export const noteFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The updated plain text content of the note (will overwrite HTML)',
+	},
+	{
+		displayName: 'User',
+		name: 'userId',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getUsers',
+		},
+		displayOptions: {
+			show: {
+				resource: ['note'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description:
+			'User to attribute the update to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	// Fields for Find operation
 	{

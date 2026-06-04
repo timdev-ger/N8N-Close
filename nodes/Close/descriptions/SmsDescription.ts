@@ -170,6 +170,24 @@ export const smsFields: INodeProperties[] = [
 				description: 'Date and time to send the SMS (required if status is scheduled)',
 			},
 			{
+				displayName: 'Date Created',
+				name: 'dateCreated',
+				type: 'dateTime',
+				default: '',
+				description: 'Override when the SMS activity happened',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the SMS to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+			},
+			{
 				displayName: 'Direction',
 				name: 'direction',
 				type: 'options',
@@ -309,6 +327,17 @@ export const smsFields: INodeProperties[] = [
 				},
 				default: '',
 				description: 'The text content of the SMS',
+			},
+			{
+				displayName: 'User',
+				name: 'userId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getUsers',
+				},
+				default: '',
+				description:
+					'User to attribute the update to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 		],
 	},

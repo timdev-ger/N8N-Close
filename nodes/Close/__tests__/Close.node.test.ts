@@ -1352,6 +1352,7 @@ describe('Close', () => {
 						duration: 300,
 						noteHtml: '<p>Great call</p>',
 						phone: '+1234567890',
+						dateCreated: '2024-01-05T12:00:00Z',
 					}); // additionalFields
 
 				(closeApiRequest as jest.Mock).mockResolvedValue(mockResponse);
@@ -1365,6 +1366,7 @@ describe('Close', () => {
 					duration: 300,
 					note_html: '<body><p><p>Great call</p></p></body>',
 					phone: '+1234567890',
+					date_created: '2024-01-05T12:00:00Z',
 				});
 			});
 
@@ -1601,6 +1603,7 @@ describe('Close', () => {
 						bodyHtml: '<p>Test content</p>',
 						cc: 'cc1@test.com, cc2@test.com',
 						sender: '"John Doe" <john@example.com>',
+						dateCreated: '2024-01-05T12:00:00Z',
 					}); // additionalFields
 
 				(closeApiRequest as jest.Mock).mockResolvedValue(mockResponse);
@@ -1615,6 +1618,7 @@ describe('Close', () => {
 					body_html: '<p>Test content</p>',
 					cc: ['cc1@test.com', 'cc2@test.com'],
 					sender: '"John Doe" <john@example.com>',
+					date_created: '2024-01-05T12:00:00Z',
 				});
 			});
 
@@ -2057,7 +2061,8 @@ describe('Close', () => {
 					.mockReturnValueOnce('create') // operation
 					.mockReturnValueOnce('lead_xyz789') // leadId
 					.mockReturnValueOnce('text') // noteContentType
-					.mockReturnValueOnce('This is a plain text note'); // note
+					.mockReturnValueOnce('This is a plain text note') // note
+					.mockReturnValueOnce('2024-01-10T10:00:00Z'); // dateCreated
 
 				(closeApiRequest as jest.Mock).mockResolvedValue(mockResponse);
 
@@ -2067,6 +2072,7 @@ describe('Close', () => {
 					lead_id: 'lead_xyz789',
 					_type: 'Note',
 					note: 'This is a plain text note',
+					date_created: '2024-01-10T10:00:00Z',
 				});
 				expect(result[0]).toHaveLength(1);
 			});
@@ -2413,6 +2419,7 @@ describe('Close', () => {
 						dateScheduled: '2024-01-15T10:00:00Z',
 						direction: 'outbound',
 						sendIn: 30,
+						dateCreated: '2024-01-05T12:00:00Z',
 					}); // additionalFields
 
 				(closeApiRequest as jest.Mock).mockResolvedValue(mockResponse);
@@ -2431,6 +2438,7 @@ describe('Close', () => {
 						date_scheduled: '2024-01-15T10:00:00Z',
 						direction: 'outbound',
 						send_in: 30,
+						date_created: '2024-01-05T12:00:00Z',
 					},
 					{},
 				);

@@ -104,6 +104,36 @@ export const customActivityFields: INodeProperties[] = [
 		default: '',
 		description: 'The status of the activity (optional). Use "draft" to create without all required fields.',
 	},
+	{
+		displayName: 'Date Created',
+		name: 'dateCreated',
+		type: 'dateTime',
+		displayOptions: {
+			show: {
+				resource: ['customActivity'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		description: 'Override when the custom activity happened',
+	},
+	{
+		displayName: 'User',
+		name: 'userId',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getUsers',
+		},
+		displayOptions: {
+			show: {
+				resource: ['customActivity'],
+				operation: ['create'],
+			},
+		},
+		default: '',
+		description:
+			'User to attribute the activity to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+	},
 
 	// UPDATE OPERATION FIELDS
 	{
@@ -159,6 +189,23 @@ export const customActivityFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The status of the activity (optional)',
+	},
+	{
+		displayName: 'User',
+		name: 'userId',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getUsers',
+		},
+		displayOptions: {
+			show: {
+				resource: ['customActivity'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description:
+			'User to attribute the update to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 
 	// GET OPERATION FIELDS

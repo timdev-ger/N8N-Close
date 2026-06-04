@@ -270,6 +270,18 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								description: 'Select the choice field',
 							},
 							{
+								displayName: 'Action',
+								name: 'action',
+								type: 'options',
+								options: [
+									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
+									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
+									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+								],
+								default: 'replace',
+								description: 'Whether to replace, add to, or remove from the existing values',
+							},
+							{
 								displayName: 'Values',
 								name: 'fieldValues',
 								type: 'multiOptions',
@@ -351,6 +363,18 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								description: 'Select the user field',
 							},
 							{
+								displayName: 'Action',
+								name: 'action',
+								type: 'options',
+								options: [
+									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
+									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
+									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+								],
+								default: 'replace',
+								description: 'Whether to replace, add to, or remove from the existing values',
+							},
+							{
 								displayName: 'Users',
 								name: 'fieldValues',
 								type: 'multiOptions',
@@ -423,6 +447,18 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								},
 								default: '',
 								description: 'Select the contact field',
+							},
+							{
+								displayName: 'Action',
+								name: 'action',
+								type: 'options',
+								options: [
+									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
+									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
+									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+								],
+								default: 'replace',
+								description: 'Whether to replace, add to, or remove from the existing values',
 							},
 							{
 								displayName: 'Contact IDs',
@@ -1207,8 +1243,8 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 		if (!Array.isArray(fieldsArray)) return;
 
 		for (const fieldData of fieldsArray) {
-			const { fieldId, fieldValue, fieldValues } = fieldData;
-			
+			const { fieldId, fieldValue, fieldValues, action } = fieldData;
+
 			if (!fieldId) {
 				continue;
 			}
@@ -1229,19 +1265,19 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 				case 'contactSingle':
 					value = fieldValue;
 					break;
-					
+
 				case 'number':
 					value = Number(fieldValue);
 					if (isNaN(value)) {
 						throw new Error(`Custom field "${field.name}" validation error: Number field value must be a valid number`);
 					}
 					break;
-					
+
 				case 'choiceMultiple':
 				case 'userMultiple':
 					value = fieldValues;
 					break;
-					
+
 				case 'contactMultiple':
 					// Handle comma-separated string to array conversion
 					if (typeof fieldValues === 'string') {
@@ -1252,7 +1288,7 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 						value = [];
 					}
 					break;
-					
+
 				default:
 					continue;
 			}
@@ -1291,8 +1327,10 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 				throw new Error(`Custom field "${field.name}" validation error: ${validationError}`);
 			}
 
-			// Add to payload with proper key format
-			payload[`custom.${fieldId}`] = value;
+			// Build key with optional .add/.remove suffix for multi-value fields
+			const isMultiple = fieldType === 'choiceMultiple' || fieldType === 'userMultiple' || fieldType === 'contactMultiple';
+			const keySuffix = isMultiple && action && action !== 'replace' ? `.${action}` : '';
+			payload[`custom.${fieldId}${keySuffix}`] = value;
 		}
 	};
 
@@ -1351,7 +1389,7 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 		if (!Array.isArray(fieldsArray)) return;
 
 		for (const fieldData of fieldsArray) {
-			const { fieldId, fieldValue, fieldValues } = fieldData;
+			const { fieldId, fieldValue, fieldValues, action } = fieldData;
 
 			if (!fieldId) {
 				continue;
@@ -1435,8 +1473,10 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 				throw new Error(`Custom field "${field.name}" validation error: ${validationError}`);
 			}
 
-			// Add to payload with proper key format
-			payload[`custom.${fieldId}`] = value;
+			// Build key with optional .add/.remove suffix for multi-value fields
+			const isMultiple = fieldType === 'choiceMultiple' || fieldType === 'userMultiple' || fieldType === 'contactMultiple';
+			const keySuffix = isMultiple && action && action !== 'replace' ? `.${action}` : '';
+			payload[`custom.${fieldId}${keySuffix}`] = value;
 		}
 	};
 
@@ -2055,7 +2095,7 @@ export function constructCustomActivityCustomFieldsPayload(customActivityData: a
 		if (!Array.isArray(fieldsArray)) return;
 
 		for (const fieldData of fieldsArray) {
-			const { fieldId, fieldValue, fieldValues } = fieldData;
+			const { fieldId, fieldValue, fieldValues, action } = fieldData;
 
 			if (!fieldId) {
 				continue;
@@ -2136,8 +2176,10 @@ export function constructCustomActivityCustomFieldsPayload(customActivityData: a
 				throw new Error(`Custom field "${field.name}" validation error: ${validationError}`);
 			}
 
-			// Add to payload with proper key format
-			payload[`custom.${fieldId}`] = value;
+			// Build key with optional .add/.remove suffix for multi-value fields
+			const isMultiple = fieldType === 'choiceMultiple' || fieldType === 'userMultiple';
+			const keySuffix = isMultiple && action && action !== 'replace' ? `.${action}` : '';
+			payload[`custom.${fieldId}${keySuffix}`] = value;
 		}
 	};
 

@@ -13,7 +13,7 @@
 [![npm version](https://badge.fury.io/js/n8n-nodes-close-crm.svg)](https://www.npmjs.com/package/n8n-nodes-close-crm)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-[What's New](#-whats-new-in-164) • [Installation](#-installation) • [Features](#-features) • [Credentials](#-credentials) • [Usage Examples](#-usage-examples) • [Resources](#-resources) • [Contributing](#-contributing) • [Code of Conduct](#-code-of-conduct)
+[What's New](#-whats-new-in-170) • [Installation](#-installation) • [Features](#-features) • [Credentials](#-credentials) • [Usage Examples](#-usage-examples) • [Resources](#-resources) • [Contributing](#-contributing) • [Code of Conduct](#-code-of-conduct)
 
 </div>
 
@@ -23,18 +23,17 @@
 
 This n8n community node provides comprehensive integration with **Close CRM**, a sales CRM built for high-growth companies that need to scale their sales operations.
 
-**Current Version: 1.6.4** - Adds the new "Automation & Bulk Actions" section: Sequences, Bulk Actions, Exports, and Field Enrichment.
+**Current Version: 1.7.0** - Adds user attribution, date backdating, missing contact types, and add/remove actions for multi-value custom fields.
 
 **What is n8n?** [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform that lets you connect different services and automate tasks.
 
-## 🆕 What's New in 1.6.4
+## 🆕 What's New in 1.7.0
 
-- **Sequences**: List, get, create, update, and delete sequences. Subscribe a contact to a sequence, fetch / list / pause / resume sequence subscriptions.
-- **Bulk Actions**: Send bulk emails, run bulk edits (set lead status, set/clear custom fields with replace/add/remove operations), bulk delete (with required `s_query` safety check), and bulk sequence subscriptions (subscribe / pause / resume / resume_finished). List and fetch endpoints for every bulk action type.
-- **Exports**: Start lead exports (`leads` / `contacts` / `lead_opps`) and opportunity exports in CSV or JSON, with options for date format, fields, smart fields, activities, addresses, and custom objects. List exports and fetch a single export to poll `status` and grab `download_url`.
-- **Field Enrichment**: AI-enrich any custom field on a lead or contact via the new `/enrich_field/` endpoint, with `set_new_value` and `overwrite_existing_value` flags.
-- **Power-User JSON Inputs**: Full Close advanced filtering (`s_query`), schedule definitions, step lists, opportunity export `params`, and sort arrays are accepted as JSON so the complete Close capability is reachable from n8n.
-- **Quality**: 28 new unit tests (194 total across 4 suites). All checks green: `tsc`, `eslint`, `jest`, `npm run build`.
+- **User Attribution**: All activity resources (Lead, Contact, Note, Call, Email, SMS, Custom Activity) now have a **User** field. Set `user_id` to post or update an activity as a specific team member — e.g. log a call on behalf of a colleague whose appointment was booked via automation.
+- **Date Backdating**: Note, Call, Email, SMS, and Custom Activity create operations now expose a **Date Created** field. Pass any timestamp to set exactly when the activity happened — great for importing historical data or retrying failed workflows without losing the original event time.
+- **Complete Email & Phone Types**: The email type dropdown now includes Direct, Mobile, Home, Fax, and URL options; the phone type dropdown adds Direct and URL — matching every type available in Close CRM.
+- **Add / Remove for Multi-Value Custom Fields**: Choice (Multiple), User (Multiple), and Contact (Multiple) custom fields now have an **Action** selector (Replace / Add / Remove). Use Add or Remove to mutate a single list entry without fetching the current value first.
+- **Quality**: 194 tests green across 4 suites. All checks green: `tsc`, `eslint`, `jest`, `npm run build`.
 
 See the [CHANGELOG](CHANGELOG.md) for complete version history.
 
