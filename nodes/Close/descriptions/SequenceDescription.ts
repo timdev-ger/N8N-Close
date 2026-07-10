@@ -131,7 +131,8 @@ export const sequenceFields: INodeProperties[] = [
 		displayName: 'Steps (JSON)',
 		name: 'steps',
 		type: 'json',
-		default: '[\n  {\n    "step_type": "email",\n    "delay": 0,\n    "required": true,\n    "email_template_id": "tmpl_xxx",\n    "threading": "old_thread"\n  }\n]',
+		default:
+			'[\n  {\n    "step_type": "email",\n    "delay": 0,\n    "required": true,\n    "email_template_id": "tmpl_xxx",\n    "threading": "old_thread"\n  }\n]',
 		displayOptions: {
 			show: {
 				resource: ['sequence'],

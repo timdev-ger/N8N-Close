@@ -102,7 +102,8 @@ export const customActivityFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The status of the activity (optional). Use "draft" to create without all required fields.',
+		description:
+			'The status of the activity (optional). Use "draft" to create without all required fields.',
 	},
 	{
 		displayName: 'Date Created',

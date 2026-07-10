@@ -29,6 +29,7 @@ The Close CRM Webhook Trigger node allows n8n workflows to execute automatically
 5. Activate the workflow
 
 The node will automatically:
+
 - Register a webhook with Close CRM
 - Store the webhook ID and signature key
 - Begin receiving events immediately
@@ -40,12 +41,14 @@ The node will automatically:
 Monitor changes to lead records in your CRM.
 
 **Available Actions:**
+
 - **Lead Created**: Triggered when a new lead is created
 - **Lead Updated**: Triggered when a lead is modified
 - **Lead Deleted**: Triggered when a lead is deleted
 - **Lead in New Status**: Triggered when a lead moves to a different status
 
 **API Mapping:**
+
 - Created/Updated/Deleted: `object_type: "lead"`, `action: "created|updated|deleted"`
 - Status Change: `object_type: "activity.lead_status_change"`, `action: "created"`
 
@@ -54,15 +57,18 @@ Monitor changes to lead records in your CRM.
 Track custom activity types you've created in Close CRM.
 
 **Available Actions:**
+
 - **Custom Activity Created**: New custom activity logged
 - **Custom Activity Updated**: Custom activity modified
 - **Custom Activity Deleted**: Custom activity removed
 
 **API Mapping:**
+
 - Created: `object_type: "custom_activity"`, `action: "created"`
 - Updated/Deleted: `object_type: "activity.custom_activity"`, `action: "updated|deleted"`
 
 **Submit-Only Trigger Behavior:**
+
 - Draft autosave and draft edit events are ignored.
 - Trigger emits only when a custom activity is actually submitted:
   - `created` with `data.status = "published"`
@@ -74,11 +80,13 @@ Track custom activity types you've created in Close CRM.
 Monitor contact records within leads.
 
 **Available Actions:**
+
 - **Contact Created**: New contact added to a lead
 - **Contact Updated**: Contact information modified
 - **Contact Deleted**: Contact removed from a lead
 
 **API Mapping:**
+
 - All actions: `object_type: "contact"`, `action: "created|updated|deleted"`
 
 ### 4. Opportunity
@@ -86,12 +94,14 @@ Monitor contact records within leads.
 Track sales opportunities and deals.
 
 **Available Actions:**
+
 - **Opportunity Created**: New opportunity created
 - **Opportunity Updated**: Opportunity details modified
 - **Opportunity Deleted**: Opportunity removed
 - **Opportunity in New Status**: Opportunity moves through pipeline stages
 
 **API Mapping:**
+
 - Created/Updated/Deleted: `object_type: "opportunity"`, `action: "created|updated|deleted"`
 - Status Change: `object_type: "activity.opportunity_status_change"`, `action: "created"`
 
@@ -100,12 +110,14 @@ Track sales opportunities and deals.
 Monitor task management and completion.
 
 **Available Actions:**
+
 - **Task Created**: New task assigned
 - **Task Updated**: Task details modified
 - **Task Deleted**: Task removed
 - **Task Completed**: Task marked as complete
 
 **API Mapping:**
+
 - Created/Updated/Deleted: `object_type: "task.lead"`, `action: "created|updated|deleted"`
 - Completed: `object_type: "activity.task_completed"`, `action: "created"`
 
@@ -114,6 +126,7 @@ Monitor task management and completion.
 Track email activities and template changes.
 
 **Available Actions:**
+
 - **Email Created**: New email logged
 - **Email Deleted**: Email removed
 - **Email Sent**: Email successfully sent
@@ -122,6 +135,7 @@ Track email activities and template changes.
 - **Email Template Deleted**: Email template removed
 
 **API Mapping:**
+
 - Email actions: `object_type: "activity.email"`, `action: "created|deleted|sent"`
 - Template actions: `object_type: "email_template"`, `action: "created|updated|deleted"`
 
@@ -130,6 +144,7 @@ Track email activities and template changes.
 Monitor meeting scheduling and status.
 
 **Available Actions:**
+
 - **Meeting Created**: New meeting scheduled
 - **Meeting Updated**: Meeting details changed
 - **Meeting Deleted**: Meeting cancelled/removed
@@ -139,6 +154,7 @@ Monitor meeting scheduling and status.
 - **Meeting Canceled**: Meeting cancelled
 
 **API Mapping:**
+
 - All actions: `object_type: "activity.meeting"`, `action: "created|updated|deleted|scheduled|started|completed|canceled"`
 
 ### 8. Call
@@ -146,12 +162,14 @@ Monitor meeting scheduling and status.
 Track phone call activities.
 
 **Available Actions:**
+
 - **Call Created**: New call logged
 - **Call Deleted**: Call record removed
 - **Call Answered**: Call was answered
 - **Call Completed**: Call finished
 
 **API Mapping:**
+
 - All actions: `object_type: "activity.call"`, `action: "created|deleted|answered|completed"`
 
 ### 9. SMS
@@ -159,12 +177,14 @@ Track phone call activities.
 Monitor SMS/text message activities.
 
 **Available Actions:**
+
 - **SMS Created**: New SMS logged
 - **SMS Updated**: SMS details modified
 - **SMS Deleted**: SMS record removed
 - **SMS Sent**: SMS successfully sent
 
 **API Mapping:**
+
 - All actions: `object_type: "activity.sms"`, `action: "created|updated|deleted|sent"`
 
 ### 10. Export
@@ -172,9 +192,11 @@ Monitor SMS/text message activities.
 Track data export operations.
 
 **Available Actions:**
+
 - **Export Completed**: Data export finished processing
 
 **API Mapping:**
+
 - Completed: `object_type: "export.lead"`, `action: "completed"`
 
 ### 11. Bulk Action
@@ -182,11 +204,13 @@ Track data export operations.
 Monitor bulk operations performed in Close CRM.
 
 **Available Actions:**
+
 - **Bulk Action Created**: Bulk operation initiated
 - **Bulk Action Updated**: Bulk operation status updated
 - **Bulk Action Completed**: Bulk operation finished
 
 **API Mapping:**
+
 - All types: `object_type: "bulk_action.delete|edit|email|sequence_subscription"`, `action: "created|updated|completed"`
 
 **Note**: When selecting bulk action events, all four bulk action types (delete, edit, email, sequence_subscription) are registered to ensure complete coverage.
@@ -198,26 +222,32 @@ Monitor administrative changes to your Close CRM configuration.
 **Available Actions:**
 
 #### Custom Fields
+
 - Custom Field (Lead/Contact/Opportunity/Activity) Created/Updated/Deleted
 - Tracks changes to custom field definitions
 
 #### Custom Activity Types
+
 - Custom Activity Type Created/Updated/Deleted
 - Monitors custom activity type configuration
 
 #### Statuses
+
 - Status (Lead/Opportunity) Created/Updated/Deleted
 - Tracks pipeline status changes
 
 #### Users & Permissions
+
 - Membership Activated/Deactivated
 - Group Created/Updated/Deleted
 
 #### Other
+
 - Saved Search Created/Updated
 - Phone Number Created/Updated/Deleted
 
 **API Mapping Examples:**
+
 - `object_type: "custom_fields.lead"`, `action: "created|updated|deleted"`
 - `object_type: "status.opportunity"`, `action: "created|updated|deleted"`
 - `object_type: "membership"`, `action: "activated|deactivated"`
@@ -229,16 +259,19 @@ Monitor administrative changes to your Close CRM configuration.
 Every webhook request from Close CRM includes cryptographic signatures to verify authenticity:
 
 **Headers:**
+
 - `close-sig-timestamp`: Unix timestamp when the request was sent
 - `close-sig-hash`: HMAC-SHA256 hash of the payload
 
 **Verification Process:**
+
 1. Extract timestamp and hash from headers
 2. Compute expected hash: `HMAC-SHA256(signature_key, timestamp + body)`
 3. Compare received hash with expected hash using constant-time comparison
 4. Reject requests with invalid signatures
 
 **Security Features:**
+
 - Constant-time comparison prevents timing attacks
 - Signature key is securely stored in workflow state
 - Automatic rejection of unsigned or improperly signed requests
@@ -261,11 +294,11 @@ When you activate a workflow with the Close Webhook trigger:
 3. **Register webhook**: POST request to `https://api.close.com/api/v1/webhook/`
    ```json
    {
-     "url": "https://your-n8n-instance.com/webhook/...",
-     "events": [
-       { "object_type": "lead", "action": "created" },
-       { "object_type": "lead", "action": "updated" }
-     ]
+   	"url": "https://your-n8n-instance.com/webhook/...",
+   	"events": [
+   		{ "object_type": "lead", "action": "created" },
+   		{ "object_type": "lead", "action": "updated" }
+   	]
    }
    ```
 4. **Store credentials**: Save `webhook_id` and `signature_key` in workflow state
@@ -296,6 +329,7 @@ When you deactivate a workflow:
 **Problem**: Workflow doesn't execute when events occur in Close CRM
 
 **Solutions:**
+
 1. Verify workflow is activated (green indicator)
 2. Check that the webhook exists: Go to Close CRM → Settings → API → Webhooks
 3. Review workflow execution history for errors
@@ -306,6 +340,7 @@ When you deactivate a workflow:
 **Problem**: Events are rejected with "Webhook signature verification failed"
 
 **Solutions:**
+
 1. Ensure your n8n instance URL is accessible from the internet
 2. Check that the workflow hasn't been deactivated and reactivated (recreates signature key)
 3. Verify no proxy or middleware is modifying webhook requests
@@ -316,6 +351,7 @@ When you deactivate a workflow:
 **Problem**: Workflow executes multiple times for a single action
 
 **Solutions:**
+
 1. This is expected behavior for Close CRM (they may retry failed webhooks)
 2. Implement idempotency in your workflow using the `event.id` field
 3. Use n8n's built-in deduplication features if available
@@ -325,6 +361,7 @@ When you deactivate a workflow:
 **Problem**: Custom activity edits in draft mode do not trigger the workflow
 
 **Explanation:**
+
 1. This trigger intentionally ignores draft autosave and draft edit updates
 2. For custom activities, workflow execution happens on submit (`draft -> published`) only
 3. The full activity payload is available when the submit event is emitted
@@ -334,6 +371,7 @@ When you deactivate a workflow:
 **Problem**: Error when activating workflow: "Failed to create webhook"
 
 **Solutions:**
+
 1. Verify Close API credentials are valid and have webhook permissions
 2. Check Close CRM webhook limit (organizations have a maximum number of webhooks)
 3. Ensure your n8n instance is reachable from the internet (Close must be able to POST to it)
@@ -342,6 +380,7 @@ When you deactivate a workflow:
 ## Webhook Payload Examples
 
 ### Lead Created Event
+
 ```json
 {
   "event": "lead.created",
@@ -361,20 +400,21 @@ When you deactivate a workflow:
 ```
 
 ### Opportunity Status Change Event
+
 ```json
 {
-  "event": "opportunity.status_change",
-  "data": {
-    "id": "oppo_xxx",
-    "lead_id": "lead_xxx",
-    "status_id": "stat_new",
-    "old_status_id": "stat_old",
-    "value": 50000,
-    "confidence": 50
-  },
-  "subscription_id": "whsub_xxx",
-  "timestamp": "2025-01-15T11:00:00.000Z",
-  "id": "ev_xxx"
+	"event": "opportunity.status_change",
+	"data": {
+		"id": "oppo_xxx",
+		"lead_id": "lead_xxx",
+		"status_id": "stat_new",
+		"old_status_id": "stat_old",
+		"value": 50000,
+		"confidence": 50
+	},
+	"subscription_id": "whsub_xxx",
+	"timestamp": "2025-01-15T11:00:00.000Z",
+	"id": "ev_xxx"
 }
 ```
 
@@ -383,6 +423,7 @@ When you deactivate a workflow:
 ### Close CRM Webhook API
 
 **Create Webhook:**
+
 ```
 POST https://api.close.com/api/v1/webhook/
 Authorization: Basic base64(API_KEY:)
@@ -396,12 +437,14 @@ Content-Type: application/json
 ```
 
 **Delete Webhook:**
+
 ```
 DELETE https://api.close.com/api/v1/webhook/{subscription_id}/
 Authorization: Basic base64(API_KEY:)
 ```
 
 **List Webhooks:**
+
 ```
 GET https://api.close.com/api/v1/webhook/
 Authorization: Basic base64(API_KEY:)
@@ -425,6 +468,7 @@ Authorization: Basic base64(API_KEY:)
 ## Support
 
 For issues or questions:
+
 - [GitHub Issues](https://github.com/m2b-creator/N8N-Close/issues)
 - [Close CRM Support](https://help.close.com/)
 - [n8n Community](https://community.n8n.io/)
