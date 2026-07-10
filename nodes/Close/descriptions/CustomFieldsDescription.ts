@@ -34,11 +34,11 @@ interface CustomField {
 /**
  * Get workspace ID for cache isolation
  */
-function getWorkspaceId(context: any): string {
+async function getWorkspaceId(context: any): Promise<string> {
 	// Use credentials hash or organization ID for workspace isolation
 	// Fallback to 'default' if no specific identifier available
-	const credentials = context.getCredentials?.('closeApi');
-	return credentials?.apiKey ? Buffer.from(credentials.apiKey).toString('base64').substring(0, 16) : 'default';
+	const credentials = await context.getCredentials?.('closeApi');
+	return credentials?.apiKey ? Buffer.from(credentials.apiKey).toString('base64') : 'default';
 }
 
 /**
@@ -497,7 +497,7 @@ export const customFieldsLoadMethods = {
 	 * Get cached custom fields with workspace isolation
 	 */
 	async getCachedCustomFields(context: any): Promise<CustomField[]> {
-		const workspaceId = getWorkspaceId(context);
+		const workspaceId = await getWorkspaceId(context);
 
 		// Determine the resource type from the context
 		const resource = context.getNodeParameter?.('resource', 0) || 'lead';
@@ -546,7 +546,7 @@ export const customFieldsLoadMethods = {
 	 * Get cached users with workspace isolation
 	 */
 	async getCachedUsers(context: any): Promise<INodePropertyOptions[]> {
-		const workspaceId = getWorkspaceId(context);
+		const workspaceId = await getWorkspaceId(context);
 		const cached = usersCache.get(workspaceId);
 
 		if (cached && isCacheValid(cached.timestamp, USER_CACHE_TTL)) {
@@ -1517,9 +1517,9 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
  * Custom activity fields are fetched for a specific custom activity type
  */
 export async function getCachedCustomActivityCustomFields(context: any, customActivityTypeId?: string): Promise<CustomField[]> {
-	const credentials = context.getCredentials?.('closeApi');
+	const credentials = await context.getCredentials?.('closeApi');
 	const workspaceId = credentials?.apiKey ?
-		Buffer.from(credentials.apiKey).toString('base64').substring(0, 16) :
+		Buffer.from(credentials.apiKey).toString('base64') :
 		'default';
 
 	// Try to get the custom activity type ID from context if not provided
