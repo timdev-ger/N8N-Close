@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2026-07-10
+
+### Fixed
+- **Lead/Contact custom fields not refreshing on credential change** — custom field option lists (Choice, User, Contact) on Lead and Contact resources now correctly reload when the Close CRM credential is switched, by adding `loadOptionsDependsOn: ['credentials']` to the affected properties (closes #22).
+
+### Technical
+- Bumped dev dependencies: `@types/node` ^26.1.1, `@typescript-eslint/eslint-plugin` ^8.63.0, `@typescript-eslint/parser` ^8.63.0, `eslint` ^10.6.0, `eslint-plugin-n8n-nodes-base` ^1.16.7, `@swc/core` ^1.15.43, `prettier` ^3.9.5.
+- Evaluated bumping `typescript` to ^7.0.2 but reverted — `@typescript-eslint` 8.x peer-caps at `typescript<6.1.0`, so TS7 isn't compatible yet; stayed on `typescript` ^6.0.3.
+
 ## [1.7.0] - 2026-06-04
 
 ### Added
