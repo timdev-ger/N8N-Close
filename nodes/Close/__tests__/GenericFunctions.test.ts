@@ -39,14 +39,16 @@ describe('GenericFunctions', () => {
 
 		it('should handle mixed content with paragraphs and lists', () => {
 			const input = 'Introduction text\n\n- List item 1\n- List item 2\n\nConclusion text';
-			const expected = '<body><p>Introduction text</p><ul><li>List item 1</li><li>List item 2</li></ul><p>Conclusion text</p></body>';
+			const expected =
+				'<body><p>Introduction text</p><ul><li>List item 1</li><li>List item 2</li></ul><p>Conclusion text</p></body>';
 			const result = convertPlainTextToHTML(input);
 			expect(result).toBe(expected);
 		});
 
 		it('should handle list items with extra spaces', () => {
 			const input = '-   Item with spaces\n-  Another item\n- Normal item';
-			const expected = '<body><ul><li>Item with spaces</li><li>Another item</li><li>Normal item</li></ul></body>';
+			const expected =
+				'<body><ul><li>Item with spaces</li><li>Another item</li><li>Normal item</li></ul></body>';
 			const result = convertPlainTextToHTML(input);
 			expect(result).toBe(expected);
 		});
@@ -65,7 +67,8 @@ describe('GenericFunctions', () => {
 
 		it('should handle empty lines between list items', () => {
 			const input = '- Item 1\n\n- Item 2\n\n- Item 3';
-			const expected = '<body><ul><li>Item 1</li></ul><ul><li>Item 2</li></ul><ul><li>Item 3</li></ul></body>';
+			const expected =
+				'<body><ul><li>Item 1</li></ul><ul><li>Item 2</li></ul><ul><li>Item 3</li></ul></body>';
 			const result = convertPlainTextToHTML(input);
 			expect(result).toBe(expected);
 		});
@@ -95,7 +98,9 @@ Potenziale für Personalgewinnung und Kundenakquise
 			// Verify it contains the second paragraph
 			expect(result).toContain('<p>Potenziale für Personalgewinnung und Kundenakquise</p>');
 			// Verify second list
-			expect(result).toContain('<li>Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf.</li>');
+			expect(result).toContain(
+				'<li>Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf.</li>',
+			);
 		});
 
 		it('should handle text with only whitespace by returning body with empty content', () => {
@@ -137,7 +142,8 @@ Potenziale für Personalgewinnung und Kundenakquise
 		});
 
 		it('should handle real-world example with German text and special characters', () => {
-			const input = 'Geschäftsführer Joachim Krampe\n\n- Überprüfung der Möglichkeiten\n- Verbesserungspotenzial für Kundenakquise';
+			const input =
+				'Geschäftsführer Joachim Krampe\n\n- Überprüfung der Möglichkeiten\n- Verbesserungspotenzial für Kundenakquise';
 			const result = convertPlainTextToHTML(input);
 
 			expect(result).toContain('<p>Geschäftsführer Joachim Krampe</p>');
@@ -147,7 +153,8 @@ Potenziale für Personalgewinnung und Kundenakquise
 		});
 
 		it('should handle text with inline HTML tags like strong', () => {
-			const input = '<strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong>\n- Der Besuch erfolgte im Simatic Showroom in Bad Homburg.\n- Die Einladung an den Geschäftsführer Joachim Krampe wurde an seinen anwesenden Vertreter übergeben.\n- Der Vertreter sagte zu, die Einladung an Herrn Krampe weiterzuleiten, weitere Kontaktaufnahme wird erwartet.\n- Simatic betreibt zwei Filialen (Bad Homburg und Kelkheim), beide unter der Leitung von Herrn Krampe.\n- Das Unternehmen scheint ein Familienunternehmen zu sein, da eine zweite Person mit dem Namen Krampe im Team vertreten ist (Daniel Krampe, Name ohne Gewähr).\n\n<strong>Potenziale für Personalgewinnung und Kundenakquise</strong>\n- Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf, wodurch Social Recruiting oder Personalbeschaffung ein potenzieller Angriffspunkt darstellt.\n- Die geringe Besucherfrequenz im Showroom (Eingangstür war versperrt) indiziert Verbesserungspotenzial in der Kundenakquise.\n- Eine Steigerung der Besucheranzahl im Showroom ist ein möglicher Ansatzpunkt.';
+			const input =
+				'<strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong>\n- Der Besuch erfolgte im Simatic Showroom in Bad Homburg.\n- Die Einladung an den Geschäftsführer Joachim Krampe wurde an seinen anwesenden Vertreter übergeben.\n- Der Vertreter sagte zu, die Einladung an Herrn Krampe weiterzuleiten, weitere Kontaktaufnahme wird erwartet.\n- Simatic betreibt zwei Filialen (Bad Homburg und Kelkheim), beide unter der Leitung von Herrn Krampe.\n- Das Unternehmen scheint ein Familienunternehmen zu sein, da eine zweite Person mit dem Namen Krampe im Team vertreten ist (Daniel Krampe, Name ohne Gewähr).\n\n<strong>Potenziale für Personalgewinnung und Kundenakquise</strong>\n- Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf, wodurch Social Recruiting oder Personalbeschaffung ein potenzieller Angriffspunkt darstellt.\n- Die geringe Besucherfrequenz im Showroom (Eingangstür war versperrt) indiziert Verbesserungspotenzial in der Kundenakquise.\n- Eine Steigerung der Besucheranzahl im Showroom ist ein möglicher Ansatzpunkt.';
 			const result = convertPlainTextToHTML(input);
 
 			// Verify it starts with body tag
@@ -155,20 +162,32 @@ Potenziale für Personalgewinnung und Kundenakquise
 			expect(result).toMatch(/<\/body>$/);
 
 			// Verify the strong tags are preserved
-			expect(result).toContain('<strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong>');
-			expect(result).toContain('<strong>Potenziale für Personalgewinnung und Kundenakquise</strong>');
+			expect(result).toContain(
+				'<strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong>',
+			);
+			expect(result).toContain(
+				'<strong>Potenziale für Personalgewinnung und Kundenakquise</strong>',
+			);
 
 			// The function now intelligently detects list items even with single newlines
 			// The strong heading should be in its own paragraph
-			expect(result).toContain('<p><strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong></p>');
+			expect(result).toContain(
+				'<p><strong>Simatic Unternehmenshintergrund und Kontaktanbahnung</strong></p>',
+			);
 
 			// And the list items should be in a proper ul/li structure
-			expect(result).toContain('<ul><li>Der Besuch erfolgte im Simatic Showroom in Bad Homburg.</li>');
+			expect(result).toContain(
+				'<ul><li>Der Besuch erfolgte im Simatic Showroom in Bad Homburg.</li>',
+			);
 			expect(result).toContain('<li>Die Einladung an den Geschäftsführer Joachim Krampe');
 
 			// Second section same behavior
-			expect(result).toContain('<p><strong>Potenziale für Personalgewinnung und Kundenakquise</strong></p>');
-			expect(result).toContain('<li>Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf');
+			expect(result).toContain(
+				'<p><strong>Potenziale für Personalgewinnung und Kundenakquise</strong></p>',
+			);
+			expect(result).toContain(
+				'<li>Aufgrund krankheitsbedingter Ausfälle besteht aktuell Personalbedarf',
+			);
 		});
 	});
 });

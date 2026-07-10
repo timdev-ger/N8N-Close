@@ -189,6 +189,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactTextFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the text field',
@@ -224,6 +225,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactNumberFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the number field',
@@ -259,6 +261,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactDateFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the date field',
@@ -294,6 +297,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactSingleChoiceFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the choice field',
@@ -304,6 +308,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactAllChoiceValues',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select a value',
@@ -337,6 +342,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactMultipleChoiceFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the choice field',
@@ -347,6 +353,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'multiOptions',
 										typeOptions: {
 											loadOptionsMethod: 'getContactAllChoiceValues',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: [],
 										description: 'Select multiple values',
@@ -380,6 +387,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactSingleUserFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the user field',
@@ -390,6 +398,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getUsers',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select a user',
@@ -423,6 +432,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactMultipleUserFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the user field',
@@ -433,6 +443,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'multiOptions',
 										typeOptions: {
 											loadOptionsMethod: 'getUsers',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: [],
 										description: 'Select multiple users',
@@ -560,7 +571,8 @@ export const leadFields: INodeProperties[] = [
 		},
 		default: '',
 		required: false,
-		description: 'The ID of the lead to retrieve information for. If provided, will search for this specific lead.',
+		description:
+			'The ID of the lead to retrieve information for. If provided, will search for this specific lead.',
 	},
 	{
 		displayName: 'Company Name',
@@ -809,6 +821,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactTextFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the text field',
@@ -844,6 +857,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactNumberFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the number field',
@@ -879,6 +893,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactDateFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the date field',
@@ -914,6 +929,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactSingleChoiceFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the choice field',
@@ -924,6 +940,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactAllChoiceValues',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select a value',
@@ -957,6 +974,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactMultipleChoiceFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the choice field',
@@ -967,6 +985,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'multiOptions',
 										typeOptions: {
 											loadOptionsMethod: 'getContactAllChoiceValues',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: [],
 										description: 'Select multiple values',
@@ -1000,6 +1019,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactSingleUserFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the user field',
@@ -1010,6 +1030,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getUsers',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select a user',
@@ -1043,6 +1064,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'options',
 										typeOptions: {
 											loadOptionsMethod: 'getContactMultipleUserFields',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: '',
 										description: 'Select the user field',
@@ -1053,6 +1075,7 @@ export const leadFields: INodeProperties[] = [
 										type: 'multiOptions',
 										typeOptions: {
 											loadOptionsMethod: 'getUsers',
+											loadOptionsDependsOn: ['credentials'],
 										},
 										default: [],
 										description: 'Select multiple users',

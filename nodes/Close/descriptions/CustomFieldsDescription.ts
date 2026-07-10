@@ -1,6 +1,10 @@
 import type { INodeProperties, INodePropertyOptions } from 'n8n-workflow';
 
-import { closeApiRequest, closeApiRequestAllItems, convertPlainTextToHTML } from '../GenericFunctions';
+import {
+	closeApiRequest,
+	closeApiRequestAllItems,
+	convertPlainTextToHTML,
+} from '../GenericFunctions';
 
 /**
  * Cache for storing custom field definitions with workspace isolation
@@ -34,11 +38,11 @@ interface CustomField {
 /**
  * Get workspace ID for cache isolation
  */
-function getWorkspaceId(context: any): string {
+async function getWorkspaceId(context: any): Promise<string> {
 	// Use credentials hash or organization ID for workspace isolation
 	// Fallback to 'default' if no specific identifier available
-	const credentials = context.getCredentials?.('closeApi');
-	return credentials?.apiKey ? Buffer.from(credentials.apiKey).toString('base64').substring(0, 16) : 'default';
+	const credentials = await context.getCredentials?.('closeApi');
+	return credentials?.apiKey ? Buffer.from(credentials.apiKey).toString('base64') : 'default';
 }
 
 /**
@@ -60,7 +64,7 @@ function normalizeCustomFieldsResponse(raw: any): CustomField[] {
 		if (raw.length === 0) return [];
 		// Some wrappers return an array of objects with a .data array inside
 		if (raw[0] && Array.isArray((raw[0] as any).data)) {
-			return (raw as any[]).flatMap((entry: any) => Array.isArray(entry.data) ? entry.data : []);
+			return (raw as any[]).flatMap((entry: any) => (Array.isArray(entry.data) ? entry.data : []));
 		}
 		// Assume it's already the list of fields
 		return raw as CustomField[];
@@ -276,7 +280,11 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								options: [
 									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
 									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
-									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+									{
+										name: 'Remove',
+										value: 'remove',
+										description: 'Remove a value from the existing list',
+									},
 								],
 								default: 'replace',
 								description: 'Whether to replace, add to, or remove from the existing values',
@@ -289,7 +297,8 @@ export const customFieldsCreateSections: INodeProperties[] = [
 									loadOptionsMethod: 'getAllChoiceValues',
 								},
 								default: [],
-								description: 'Select multiple values (shows all possible values from all choice fields)',
+								description:
+									'Select multiple values (shows all possible values from all choice fields)',
 								displayOptions: {
 									hide: {
 										fieldId: [''],
@@ -369,7 +378,11 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								options: [
 									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
 									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
-									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+									{
+										name: 'Remove',
+										value: 'remove',
+										description: 'Remove a value from the existing list',
+									},
 								],
 								default: 'replace',
 								description: 'Whether to replace, add to, or remove from the existing values',
@@ -455,7 +468,11 @@ export const customFieldsCreateSections: INodeProperties[] = [
 								options: [
 									{ name: 'Replace', value: 'replace', description: 'Replace all existing values' },
 									{ name: 'Add', value: 'add', description: 'Add a value to the existing list' },
-									{ name: 'Remove', value: 'remove', description: 'Remove a value from the existing list' },
+									{
+										name: 'Remove',
+										value: 'remove',
+										description: 'Remove a value from the existing list',
+									},
 								],
 								default: 'replace',
 								description: 'Whether to replace, add to, or remove from the existing values',
@@ -479,15 +496,17 @@ export const customFieldsCreateSections: INodeProperties[] = [
 /**
  * Custom Fields UI sections for Update operation (same structure as create)
  */
-export const customFieldsUpdateSections: INodeProperties[] = customFieldsCreateSections.map(section => ({
-	...section,
-	displayOptions: {
-		show: {
-			resource: ['lead', 'opportunity'],
-			operation: ['update'],
+export const customFieldsUpdateSections: INodeProperties[] = customFieldsCreateSections.map(
+	(section) => ({
+		...section,
+		displayOptions: {
+			show: {
+				resource: ['lead', 'opportunity'],
+				operation: ['update'],
+			},
 		},
-	},
-}));
+	}),
+);
 
 /**
  * Load options methods for the new custom fields implementation
@@ -497,7 +516,7 @@ export const customFieldsLoadMethods = {
 	 * Get cached custom fields with workspace isolation
 	 */
 	async getCachedCustomFields(context: any): Promise<CustomField[]> {
-		const workspaceId = getWorkspaceId(context);
+		const workspaceId = await getWorkspaceId(context);
 
 		// Determine the resource type from the context
 		const resource = context.getNodeParameter?.('resource', 0) || 'lead';
@@ -510,9 +529,8 @@ export const customFieldsLoadMethods = {
 
 		try {
 			// Use the appropriate endpoint based on resource type
-			const endpoint = resource === 'opportunity'
-				? '/custom_field/opportunity/'
-				: '/custom_field/lead/';
+			const endpoint =
+				resource === 'opportunity' ? '/custom_field/opportunity/' : '/custom_field/lead/';
 
 			// Prefer the all-items helper to flatten pagination and match JSON shapes
 			let fieldsData: CustomField[] = [];
@@ -546,7 +564,7 @@ export const customFieldsLoadMethods = {
 	 * Get cached users with workspace isolation
 	 */
 	async getCachedUsers(context: any): Promise<INodePropertyOptions[]> {
-		const workspaceId = getWorkspaceId(context);
+		const workspaceId = await getWorkspaceId(context);
 		const cached = usersCache.get(workspaceId);
 
 		if (cached && isCacheValid(cached.timestamp, USER_CACHE_TTL)) {
@@ -556,7 +574,8 @@ export const customFieldsLoadMethods = {
 		try {
 			// Use the existing Close API request function for consistency
 			const users = await (closeApiRequest as any).call(context, 'GET', '/user/');
-			const usersData = (users && Array.isArray(users.data)) ? users.data : normalizeCustomFieldsResponse(users);
+			const usersData =
+				users && Array.isArray(users.data) ? users.data : normalizeCustomFieldsResponse(users);
 
 			const userOptions: INodePropertyOptions[] = (usersData as any[]).map((user: any) => ({
 				name: `${user.first_name} ${user.last_name} (${user.email})`,
@@ -582,8 +601,8 @@ export const customFieldsLoadMethods = {
 	async getTextFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'text')
-			.map(field => ({
+			.filter((field) => field.type === 'text')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -595,8 +614,8 @@ export const customFieldsLoadMethods = {
 	async getNumberFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'number')
-			.map(field => ({
+			.filter((field) => field.type === 'number')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -608,8 +627,8 @@ export const customFieldsLoadMethods = {
 	async getDateFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'date' || field.type === 'datetime')
-			.map(field => ({
+			.filter((field) => field.type === 'date' || field.type === 'datetime')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -621,8 +640,8 @@ export const customFieldsLoadMethods = {
 	async getChoiceSingleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -634,8 +653,8 @@ export const customFieldsLoadMethods = {
 	async getChoiceMultipleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -647,8 +666,8 @@ export const customFieldsLoadMethods = {
 	async getUserSingleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -660,8 +679,8 @@ export const customFieldsLoadMethods = {
 	async getUserMultipleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -673,8 +692,8 @@ export const customFieldsLoadMethods = {
 	async getContactSingleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'contact' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'contact' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -686,8 +705,8 @@ export const customFieldsLoadMethods = {
 	async getContactMultipleFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedCustomFields(context);
 		return fields
-			.filter(field => field.type === 'contact' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'contact' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -736,7 +755,9 @@ export const customFieldsLoadMethods = {
 						const multipleFields = customFields.choiceMultipleField.choiceMultipleFields;
 						if (Array.isArray(multipleFields)) {
 							// Find the field that's currently being edited (the one without values set)
-							const currentField = multipleFields.find((f: any) => f.fieldId && (!f.fieldValues || f.fieldValues.length === 0));
+							const currentField = multipleFields.find(
+								(f: any) => f.fieldId && (!f.fieldValues || f.fieldValues.length === 0),
+							);
 							if (currentField?.fieldId) {
 								selectedFieldId = currentField.fieldId;
 							} else if (multipleFields.length > 0) {
@@ -751,13 +772,15 @@ export const customFieldsLoadMethods = {
 			}
 
 			const fields = await this.getCachedCustomFields(context);
-			const choiceFields = fields.filter(f => f.type === 'choices' && f.choices && Array.isArray(f.choices));
+			const choiceFields = fields.filter(
+				(f) => f.type === 'choices' && f.choices && Array.isArray(f.choices),
+			);
 
 			// If we have a selected field, only return its choices
 			if (selectedFieldId) {
-				const selectedField = choiceFields.find(f => f.id === selectedFieldId);
+				const selectedField = choiceFields.find((f) => f.id === selectedFieldId);
 				if (selectedField && selectedField.choices) {
-					const result = selectedField.choices.map(choice => ({
+					const result = selectedField.choices.map((choice) => ({
 						name: choice,
 						value: choice,
 					}));
@@ -805,13 +828,28 @@ export const customFieldsLoadMethods = {
 			// Try multiple ways to get the fieldId
 			const attempts = [
 				{ name: 'Direct fieldId', fn: () => context.getCurrentNodeParameter('fieldId') },
-				{ name: 'Single choice path', fn: () => context.getCurrentNodeParameter('customFields.choiceSingleField.choiceSingleFields.fieldId') },
-				{ name: 'Multiple choice path', fn: () => context.getCurrentNodeParameter('customFields.choiceMultipleField.choiceMultipleFields.fieldId') },
+				{
+					name: 'Single choice path',
+					fn: () =>
+						context.getCurrentNodeParameter(
+							'customFields.choiceSingleField.choiceSingleFields.fieldId',
+						),
+				},
+				{
+					name: 'Multiple choice path',
+					fn: () =>
+						context.getCurrentNodeParameter(
+							'customFields.choiceMultipleField.choiceMultipleFields.fieldId',
+						),
+				},
 				{
 					name: 'Node parameters',
 					fn: () => {
 						const params = context.getNodeParameter('customFields');
-						console.log('[getFieldChoices] Full customFields params:', JSON.stringify(params, null, 2));
+						console.log(
+							'[getFieldChoices] Full customFields params:',
+							JSON.stringify(params, null, 2),
+						);
 						if (params?.choiceSingleField?.choiceSingleFields?.[0]?.fieldId) {
 							return params.choiceSingleField.choiceSingleFields[0].fieldId;
 						}
@@ -819,7 +857,7 @@ export const customFieldsLoadMethods = {
 							return params.choiceMultipleField.choiceMultipleFields[0].fieldId;
 						}
 						return undefined;
-					}
+					},
 				},
 			];
 
@@ -832,7 +870,10 @@ export const customFieldsLoadMethods = {
 						break;
 					}
 				} catch (e) {
-					console.log(`[getFieldChoices] "${attempt.name}" failed:`, e instanceof Error ? e.message : e);
+					console.log(
+						`[getFieldChoices] "${attempt.name}" failed:`,
+						e instanceof Error ? e.message : e,
+					);
 				}
 			}
 
@@ -849,7 +890,7 @@ export const customFieldsLoadMethods = {
 			console.log(`[getFieldChoices] Found ${fields.length} total custom fields`);
 
 			// Find the specific field
-			const field = fields.find(f => f.id === fieldId);
+			const field = fields.find((f) => f.id === fieldId);
 
 			if (!field) {
 				console.log(`[getFieldChoices] Field not found for ID: ${fieldId}`);
@@ -864,8 +905,11 @@ export const customFieldsLoadMethods = {
 					console.log(`[getFieldChoices] Field "${field.name}" has no choices`);
 					return [];
 				}
-				console.log(`[getFieldChoices] Returning ${field.choices.length} choices for ${field.name}:`, field.choices);
-				return field.choices.map(choice => ({
+				console.log(
+					`[getFieldChoices] Returning ${field.choices.length} choices for ${field.name}:`,
+					field.choices,
+				);
+				return field.choices.map((choice) => ({
 					name: choice,
 					value: choice,
 				}));
@@ -910,12 +954,13 @@ export const customFieldsLoadMethods = {
 		}
 
 		return fields
-			.filter(field => {
+			.filter((field) => {
 				if (field.type !== config.type) return false;
-				return !(config.multiple !== undefined && field.accepts_multiple_values !== config.multiple);
-
+				return !(
+					config.multiple !== undefined && field.accepts_multiple_values !== config.multiple
+				);
 			})
-			.map(field => ({
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -924,14 +969,17 @@ export const customFieldsLoadMethods = {
 	/**
 	 * Filter fields by type and cardinality (legacy method)
 	 */
-	filterFieldsByType(fields: CustomField[], type: string, multiple?: boolean): INodePropertyOptions[] {
+	filterFieldsByType(
+		fields: CustomField[],
+		type: string,
+		multiple?: boolean,
+	): INodePropertyOptions[] {
 		return fields
-			.filter(field => {
+			.filter((field) => {
 				if (field.type !== type) return false;
 				return !(multiple !== undefined && field.accepts_multiple_values !== multiple);
-
 			})
-			.map(field => ({
+			.map((field) => ({
 				name: `${field.name} (${field.accepts_multiple_values ? 'Multiple' : 'Single'})`,
 				value: field.id,
 			}));
@@ -941,11 +989,11 @@ export const customFieldsLoadMethods = {
 	 * Get choices for a specific field (legacy method)
 	 */
 	getChoicesForField(fields: CustomField[], fieldId: string): INodePropertyOptions[] {
-		const field = fields.find(f => f.id === fieldId);
+		const field = fields.find((f) => f.id === fieldId);
 		if (!field || field.type !== 'choices' || !field.choices) {
 			return [];
 		}
-		return field.choices.map(choice => ({
+		return field.choices.map((choice) => ({
 			name: choice,
 			value: choice,
 		}));
@@ -1008,8 +1056,8 @@ export const customFieldsLoadMethods = {
 	async getContactTextFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'text')
-			.map(field => ({
+			.filter((field) => field.type === 'text')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1021,8 +1069,8 @@ export const customFieldsLoadMethods = {
 	async getContactNumberFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'number')
-			.map(field => ({
+			.filter((field) => field.type === 'number')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1034,8 +1082,8 @@ export const customFieldsLoadMethods = {
 	async getContactDateFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'date' || field.type === 'datetime')
-			.map(field => ({
+			.filter((field) => field.type === 'date' || field.type === 'datetime')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1047,8 +1095,8 @@ export const customFieldsLoadMethods = {
 	async getContactSingleChoiceFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1060,8 +1108,8 @@ export const customFieldsLoadMethods = {
 	async getContactMultipleChoiceFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1073,7 +1121,9 @@ export const customFieldsLoadMethods = {
 	async getContactAllChoiceValues(context: any): Promise<INodePropertyOptions[]> {
 		try {
 			const fields = await this.getCachedContactCustomFields(context);
-			const choiceFields = fields.filter(f => f.type === 'choices' && f.choices && Array.isArray(f.choices));
+			const choiceFields = fields.filter(
+				(f) => f.type === 'choices' && f.choices && Array.isArray(f.choices),
+			);
 
 			// Return all choices from all fields with field name label
 			const allChoices = new Map<string, string>();
@@ -1108,8 +1158,8 @@ export const customFieldsLoadMethods = {
 	async getContactSingleUserFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1121,13 +1171,12 @@ export const customFieldsLoadMethods = {
 	async getContactMultipleUserFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await this.getCachedContactCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
 	},
-
 };
 
 /**
@@ -1201,7 +1250,11 @@ export const customFieldValidators = {
 	 * Validate user field value
 	 */
 	validateUser(value: any, field: CustomField): string | null {
-		const values = field.accepts_multiple_values ? (Array.isArray(value) ? value : [value]) : [value];
+		const values = field.accepts_multiple_values
+			? Array.isArray(value)
+				? value
+				: [value]
+			: [value];
 		for (const v of values) {
 			const s = String(v);
 			if (s.indexOf('user_') !== 0) {
@@ -1215,7 +1268,11 @@ export const customFieldValidators = {
 	 * Validate contact field value
 	 */
 	validateContact(value: any, field: CustomField): string | null {
-		const values = field.accepts_multiple_values ? (Array.isArray(value) ? value : [value]) : [value];
+		const values = field.accepts_multiple_values
+			? Array.isArray(value)
+				? value
+				: [value]
+			: [value];
 		for (const v of values) {
 			const s = String(v);
 			if (s.indexOf('cont_') !== 0) {
@@ -1229,7 +1286,10 @@ export const customFieldValidators = {
 /**
  * Utility function to construct custom field payload
  */
-export function constructCustomFieldsPayload(customFieldsData: any, fields: CustomField[]): Record<string, any> {
+export function constructCustomFieldsPayload(
+	customFieldsData: any,
+	fields: CustomField[],
+): Record<string, any> {
 	const payload: Record<string, any> = {};
 
 	// Handle the new collection-based custom fields structure
@@ -1249,7 +1309,7 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 				continue;
 			}
 
-			const field = fields.find(f => f.id === fieldId);
+			const field = fields.find((f) => f.id === fieldId);
 			if (!field) {
 				continue;
 			}
@@ -1269,7 +1329,9 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 				case 'number':
 					value = Number(fieldValue);
 					if (isNaN(value)) {
-						throw new Error(`Custom field "${field.name}" validation error: Number field value must be a valid number`);
+						throw new Error(
+							`Custom field "${field.name}" validation error: Number field value must be a valid number`,
+						);
 					}
 					break;
 
@@ -1281,7 +1343,10 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 				case 'contactMultiple':
 					// Handle comma-separated string to array conversion
 					if (typeof fieldValues === 'string') {
-						value = String(fieldValues).split(',').map(id => id.trim()).filter(id => id);
+						value = String(fieldValues)
+							.split(',')
+							.map((id) => id.trim())
+							.filter((id) => id);
 					} else if (Array.isArray(fieldValues)) {
 						value = fieldValues;
 					} else {
@@ -1294,7 +1359,12 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 			}
 
 			// Skip if value is empty
-			if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+			if (
+				value === undefined ||
+				value === null ||
+				value === '' ||
+				(Array.isArray(value) && value.length === 0)
+			) {
 				continue;
 			}
 
@@ -1328,7 +1398,10 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 			}
 
 			// Build key with optional .add/.remove suffix for multi-value fields
-			const isMultiple = fieldType === 'choiceMultiple' || fieldType === 'userMultiple' || fieldType === 'contactMultiple';
+			const isMultiple =
+				fieldType === 'choiceMultiple' ||
+				fieldType === 'userMultiple' ||
+				fieldType === 'contactMultiple';
 			const keySuffix = isMultiple && action && action !== 'replace' ? `.${action}` : '';
 			payload[`custom.${fieldId}${keySuffix}`] = value;
 		}
@@ -1377,7 +1450,10 @@ export function constructCustomFieldsPayload(customFieldsData: any, fields: Cust
 /**
  * Utility function to construct contact custom field payload
  */
-export function constructContactCustomFieldsPayload(contactData: any, fields: CustomField[]): Record<string, any> {
+export function constructContactCustomFieldsPayload(
+	contactData: any,
+	fields: CustomField[],
+): Record<string, any> {
 	const payload: Record<string, any> = {};
 
 	if (!contactData) {
@@ -1395,7 +1471,7 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 				continue;
 			}
 
-			const field = fields.find(f => f.id === fieldId);
+			const field = fields.find((f) => f.id === fieldId);
 			if (!field) {
 				continue;
 			}
@@ -1415,7 +1491,9 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 				case 'number':
 					value = Number(fieldValue);
 					if (isNaN(value)) {
-						throw new Error(`Custom field "${field.name}" validation error: Number field value must be a valid number`);
+						throw new Error(
+							`Custom field "${field.name}" validation error: Number field value must be a valid number`,
+						);
 					}
 					break;
 
@@ -1427,7 +1505,10 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 				case 'contactMultiple':
 					// Handle comma-separated string to array conversion
 					if (typeof fieldValues === 'string') {
-						value = String(fieldValues).split(',').map(id => id.trim()).filter(id => id);
+						value = String(fieldValues)
+							.split(',')
+							.map((id) => id.trim())
+							.filter((id) => id);
 					} else if (Array.isArray(fieldValues)) {
 						value = fieldValues;
 					} else {
@@ -1440,7 +1521,12 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 			}
 
 			// Skip if value is empty
-			if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+			if (
+				value === undefined ||
+				value === null ||
+				value === '' ||
+				(Array.isArray(value) && value.length === 0)
+			) {
 				continue;
 			}
 
@@ -1474,7 +1560,10 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 			}
 
 			// Build key with optional .add/.remove suffix for multi-value fields
-			const isMultiple = fieldType === 'choiceMultiple' || fieldType === 'userMultiple' || fieldType === 'contactMultiple';
+			const isMultiple =
+				fieldType === 'choiceMultiple' ||
+				fieldType === 'userMultiple' ||
+				fieldType === 'contactMultiple';
 			const keySuffix = isMultiple && action && action !== 'replace' ? `.${action}` : '';
 			payload[`custom.${fieldId}${keySuffix}`] = value;
 		}
@@ -1498,7 +1587,10 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
 	}
 
 	if (contactData.contactCustomChoiceMultipleFields?.choiceMultipleFields) {
-		processFields(contactData.contactCustomChoiceMultipleFields.choiceMultipleFields, 'choiceMultiple');
+		processFields(
+			contactData.contactCustomChoiceMultipleFields.choiceMultipleFields,
+			'choiceMultiple',
+		);
 	}
 
 	if (contactData.contactCustomUserSingleFields?.userSingleFields) {
@@ -1516,11 +1608,14 @@ export function constructContactCustomFieldsPayload(contactData: any, fields: Cu
  * Get cached custom activity custom fields with workspace isolation
  * Custom activity fields are fetched for a specific custom activity type
  */
-export async function getCachedCustomActivityCustomFields(context: any, customActivityTypeId?: string): Promise<CustomField[]> {
-	const credentials = context.getCredentials?.('closeApi');
-	const workspaceId = credentials?.apiKey ?
-		Buffer.from(credentials.apiKey).toString('base64').substring(0, 16) :
-		'default';
+export async function getCachedCustomActivityCustomFields(
+	context: any,
+	customActivityTypeId?: string,
+): Promise<CustomField[]> {
+	const credentials = await context.getCredentials?.('closeApi');
+	const workspaceId = credentials?.apiKey
+		? Buffer.from(credentials.apiKey).toString('base64')
+		: 'default';
 
 	// Try to get the custom activity type ID from context if not provided
 	if (!customActivityTypeId) {
@@ -1545,7 +1640,11 @@ export async function getCachedCustomActivityCustomFields(context: any, customAc
 
 	try {
 		// Fetch the specific custom activity type to get its field definitions
-		const typeResponse = await (closeApiRequest as any).call(context, 'GET', `/custom_activity/${customActivityTypeId}/`);
+		const typeResponse = await (closeApiRequest as any).call(
+			context,
+			'GET',
+			`/custom_activity/${customActivityTypeId}/`,
+		);
 
 		if (!typeResponse || !typeResponse.fields || !Array.isArray(typeResponse.fields)) {
 			return [];
@@ -1833,7 +1932,8 @@ export const customActivityCustomFieldsCreateSections: INodeProperties[] = [
 									loadOptionsMethod: 'getCustomActivityAllChoiceValues',
 								},
 								default: [],
-								description: 'Select multiple values (shows all possible values from all choice fields)',
+								description:
+									'Select multiple values (shows all possible values from all choice fields)',
 								displayOptions: {
 									hide: {
 										fieldId: [''],
@@ -1927,15 +2027,16 @@ export const customActivityCustomFieldsCreateSections: INodeProperties[] = [
 /**
  * Custom Activity Custom Fields UI sections for Update operation
  */
-export const customActivityCustomFieldsUpdateSections: INodeProperties[] = customActivityCustomFieldsCreateSections.map(section => ({
-	...section,
-	displayOptions: {
-		show: {
-			resource: ['customActivity'],
-			operation: ['update'],
+export const customActivityCustomFieldsUpdateSections: INodeProperties[] =
+	customActivityCustomFieldsCreateSections.map((section) => ({
+		...section,
+		displayOptions: {
+			show: {
+				resource: ['customActivity'],
+				operation: ['update'],
+			},
 		},
-	},
-}));
+	}));
 
 /**
  * Load methods for Custom Activity custom fields
@@ -1947,8 +2048,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityTextFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'text')
-			.map(field => ({
+			.filter((field) => field.type === 'text')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1960,8 +2061,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityRichTextFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'richtextarea')
-			.map(field => ({
+			.filter((field) => field.type === 'richtextarea')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1973,8 +2074,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityNumberFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'number')
-			.map(field => ({
+			.filter((field) => field.type === 'number')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1986,8 +2087,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityDateFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'date' || field.type === 'datetime')
-			.map(field => ({
+			.filter((field) => field.type === 'date' || field.type === 'datetime')
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -1999,8 +2100,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivitySingleChoiceFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -2012,8 +2113,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityMultipleChoiceFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'choices' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'choices' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -2025,7 +2126,9 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityAllChoiceValues(context: any): Promise<INodePropertyOptions[]> {
 		try {
 			const fields = await getCachedCustomActivityCustomFields(context);
-			const choiceFields = fields.filter(f => f.type === 'choices' && f.choices && Array.isArray(f.choices));
+			const choiceFields = fields.filter(
+				(f) => f.type === 'choices' && f.choices && Array.isArray(f.choices),
+			);
 
 			// Collect unique choices (same choice value only appears once)
 			const uniqueChoices = new Set<string>();
@@ -2038,7 +2141,7 @@ export const customActivityCustomFieldsLoadMethods = {
 				}
 			}
 
-			const result = Array.from(uniqueChoices).map(choice => ({
+			const result = Array.from(uniqueChoices).map((choice) => ({
 				name: choice,
 				value: choice,
 			}));
@@ -2059,8 +2162,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivitySingleUserFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && !field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && !field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -2072,8 +2175,8 @@ export const customActivityCustomFieldsLoadMethods = {
 	async getCustomActivityMultipleUserFields(context: any): Promise<INodePropertyOptions[]> {
 		const fields = await getCachedCustomActivityCustomFields(context);
 		return fields
-			.filter(field => field.type === 'user' && field.accepts_multiple_values)
-			.map(field => ({
+			.filter((field) => field.type === 'user' && field.accepts_multiple_values)
+			.map((field) => ({
 				name: field.name,
 				value: field.id,
 			}));
@@ -2083,7 +2186,10 @@ export const customActivityCustomFieldsLoadMethods = {
 /**
  * Utility function to construct Custom Activity custom field payload
  */
-export function constructCustomActivityCustomFieldsPayload(customActivityData: any, fields: CustomField[]): Record<string, any> {
+export function constructCustomActivityCustomFieldsPayload(
+	customActivityData: any,
+	fields: CustomField[],
+): Record<string, any> {
 	const payload: Record<string, any> = {};
 
 	if (!customActivityData) {
@@ -2101,7 +2207,7 @@ export function constructCustomActivityCustomFieldsPayload(customActivityData: a
 				continue;
 			}
 
-			const field = fields.find(f => f.id === fieldId);
+			const field = fields.find((f) => f.id === fieldId);
 			if (!field) {
 				continue;
 			}
@@ -2121,7 +2227,9 @@ export function constructCustomActivityCustomFieldsPayload(customActivityData: a
 				case 'number':
 					value = Number(fieldValue);
 					if (isNaN(value)) {
-						throw new Error(`Custom field "${field.name}" validation error: Number field value must be a valid number`);
+						throw new Error(
+							`Custom field "${field.name}" validation error: Number field value must be a valid number`,
+						);
 					}
 					break;
 
@@ -2142,7 +2250,12 @@ export function constructCustomActivityCustomFieldsPayload(customActivityData: a
 			}
 
 			// Skip if value is empty
-			if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+			if (
+				value === undefined ||
+				value === null ||
+				value === '' ||
+				(Array.isArray(value) && value.length === 0)
+			) {
 				continue;
 			}
 

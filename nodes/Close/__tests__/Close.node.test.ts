@@ -63,6 +63,53 @@ describe('Close', () => {
 			expect(close.methods?.loadOptions?.getSmartViews).toBeDefined();
 		});
 
+		it('should refresh lead contact custom fields when credentials change', () => {
+			const credentialDependentMethods = new Set([
+				'getContactTextFields',
+				'getContactNumberFields',
+				'getContactDateFields',
+				'getContactSingleChoiceFields',
+				'getContactAllChoiceValues',
+				'getContactMultipleChoiceFields',
+				'getContactSingleUserFields',
+				'getContactMultipleUserFields',
+				'getUsers',
+			]);
+
+			const collectProperties = (
+				properties: any[],
+				ancestors: any[] = [],
+			): Array<{ property: any; ancestors: any[] }> =>
+				properties.flatMap((property) => [
+					{ property, ancestors },
+					...(Array.isArray(property.options)
+						? collectProperties(property.options, [...ancestors, property])
+						: []),
+					...(Array.isArray(property.values)
+						? collectProperties(property.values, [...ancestors, property])
+						: []),
+				]);
+
+			const leadUpdateCustomFieldProperties = collectProperties(
+				close.description.properties,
+			).filter(
+				({ property, ancestors }) =>
+					credentialDependentMethods.has(property.typeOptions?.loadOptionsMethod) &&
+					ancestors.some(
+						(ancestor) =>
+							typeof ancestor.name === 'string' && ancestor.name.startsWith('contactCustom'),
+					),
+			);
+
+			expect(leadUpdateCustomFieldProperties.length).toBeGreaterThan(0);
+
+			for (const { property } of leadUpdateCustomFieldProperties) {
+				expect(property.typeOptions?.loadOptionsDependsOn).toEqual(
+					expect.arrayContaining(['credentials']),
+				);
+			}
+		});
+
 		it('should have resource options', () => {
 			const resourceProperty = close.description.properties.find(
 				(prop) => prop.name === 'resource',
@@ -72,12 +119,7 @@ describe('Close', () => {
 			expect(resourceProperty?.options).toHaveLength(16);
 			const resourceValues = resourceProperty?.options?.map((op: any) => op.value);
 			expect(resourceValues).toEqual(
-				expect.arrayContaining([
-					'sequence',
-					'bulkAction',
-					'export',
-					'fieldEnrichment',
-				]),
+				expect.arrayContaining(['sequence', 'bulkAction', 'export', 'fieldEnrichment']),
 			);
 		});
 
@@ -553,14 +595,14 @@ describe('Close', () => {
 						{
 							id: 'lead_abc123',
 							name: 'Test Company 1',
-							status_id: 'stat_abc123'
+							status_id: 'stat_abc123',
 						},
 						{
 							id: 'lead_def456',
 							name: 'Test Company 2',
-							status_id: 'stat_def456'
-						}
-					]
+							status_id: 'stat_def456',
+						},
+					],
 				};
 
 				mockExecuteFunctions.getNodeParameter
@@ -589,9 +631,9 @@ describe('Close', () => {
 							id: 'lead_abc123',
 							name: 'Test Company',
 							display_name: 'Test Company',
-							status_id: 'stat_abc123'
-						}
-					]
+							status_id: 'stat_abc123',
+						},
+					],
 				};
 
 				mockExecuteFunctions.getNodeParameter
@@ -616,29 +658,43 @@ describe('Close', () => {
 						queries: [
 							{
 								type: 'object_type',
-								object_type: 'lead'
+								object_type: 'lead',
 							},
 							{
 								type: 'field_condition',
 								field: {
 									type: 'regular_field',
 									object_type: 'lead',
-									field_name: 'display_name'
+									field_name: 'display_name',
 								},
 								condition: {
 									type: 'text',
 									mode: 'full_words',
-									value: 'Test Company'
-								}
-							}
-						]
+									value: 'Test Company',
+								},
+							},
+						],
 					},
 					_fields: {
-						lead: ['id', 'display_name', 'name', 'description', 'url', 'status_id', 'status_label',
-							   'contacts', 'addresses', 'created_by', 'date_created', 'date_updated',
-							   'organization_id', 'tasks', 'opportunities']
+						lead: [
+							'id',
+							'display_name',
+							'name',
+							'description',
+							'url',
+							'status_id',
+							'status_label',
+							'contacts',
+							'addresses',
+							'created_by',
+							'date_created',
+							'date_updated',
+							'organization_id',
+							'tasks',
+							'opportunities',
+						],
 					},
-					results_limit: 50
+					results_limit: 50,
 				});
 			});
 		});
@@ -1148,7 +1204,6 @@ describe('Close', () => {
 				});
 			});
 
-
 			it('should throw error when lead ID is missing', async () => {
 				mockExecuteFunctions.getNodeParameter
 					.mockReturnValueOnce('opportunity') // resource
@@ -1205,8 +1260,8 @@ describe('Close', () => {
 				mockExecuteFunctions.getNodeParameter
 					.mockReturnValueOnce('opportunity') // resource
 					.mockReturnValueOnce('find') // operation
-				.mockReturnValueOnce('') // opportunityId
-				.mockReturnValueOnce('lead_xyz789') // leadId
+					.mockReturnValueOnce('') // opportunityId
+					.mockReturnValueOnce('lead_xyz789') // leadId
 					.mockReturnValueOnce('') // statusId
 					.mockReturnValueOnce('') // assignedTo
 					.mockReturnValueOnce('') // statusType
@@ -1235,8 +1290,8 @@ describe('Close', () => {
 				mockExecuteFunctions.getNodeParameter
 					.mockReturnValueOnce('opportunity') // resource
 					.mockReturnValueOnce('find') // operation
-				.mockReturnValueOnce('') // opportunityId
-				.mockReturnValueOnce('') // leadId
+					.mockReturnValueOnce('') // opportunityId
+					.mockReturnValueOnce('') // leadId
 					.mockReturnValueOnce('') // statusId
 					.mockReturnValueOnce('') // assignedTo
 					.mockReturnValueOnce('') // statusType
@@ -2037,7 +2092,13 @@ describe('Close', () => {
 
 				await close.execute.call(mockExecuteFunctions);
 
-				expect(closeApiRequestAllItems).toHaveBeenCalledWith('data', 'GET', '/activity/meeting/', {}, {});
+				expect(closeApiRequestAllItems).toHaveBeenCalledWith(
+					'data',
+					'GET',
+					'/activity/meeting/',
+					{},
+					{},
+				);
 			});
 		});
 	});
@@ -2924,7 +2985,6 @@ describe('Close', () => {
 			});
 		});
 
-
 		describe('Bulk Update Tasks', () => {
 			it('should bulk update tasks by IDs', async () => {
 				const mockResponse = {
@@ -3070,9 +3130,7 @@ describe('Close', () => {
 				name: 'My Sequence',
 				timezone: 'America/Los_Angeles',
 				schedule: { ranges: [{ weekday: 1, start: '09:00', end: '17:00' }] },
-				steps: [
-					{ step_type: 'email', delay: 0, required: true, email_template_id: 'tmpl_1' },
-				],
+				steps: [{ step_type: 'email', delay: 0, required: true, email_template_id: 'tmpl_1' }],
 			});
 		});
 
@@ -3355,19 +3413,15 @@ describe('Close', () => {
 
 			await close.execute.call(mockExecuteFunctions);
 
-			expect(closeApiRequest).toHaveBeenCalledWith(
-				'POST',
-				'/bulk_action/sequence_subscription/',
-				{
-					action_type: 'subscribe',
-					sequence_id: 'seq_1',
-					sender_account_id: 'emailacc_1',
-					sender_name: 'Rep',
-					sender_email: 'rep@example.com',
-					contact_preference: 'lead',
-					s_query: {},
-				},
-			);
+			expect(closeApiRequest).toHaveBeenCalledWith('POST', '/bulk_action/sequence_subscription/', {
+				action_type: 'subscribe',
+				sequence_id: 'seq_1',
+				sender_account_id: 'emailacc_1',
+				sender_name: 'Rep',
+				sender_email: 'rep@example.com',
+				contact_preference: 'lead',
+				s_query: {},
+			});
 		});
 
 		it('should run bulk sequence pause without sender fields', async () => {
@@ -3382,14 +3436,10 @@ describe('Close', () => {
 
 			await close.execute.call(mockExecuteFunctions);
 
-			expect(closeApiRequest).toHaveBeenCalledWith(
-				'POST',
-				'/bulk_action/sequence_subscription/',
-				{
-					action_type: 'pause',
-					s_query: {},
-				},
-			);
+			expect(closeApiRequest).toHaveBeenCalledWith('POST', '/bulk_action/sequence_subscription/', {
+				action_type: 'pause',
+				s_query: {},
+			});
 		});
 
 		it('should fetch a single bulk email by ID', async () => {

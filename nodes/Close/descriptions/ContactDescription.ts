@@ -38,6 +38,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactTextFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the text field',
@@ -73,6 +74,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactNumberFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the number field',
@@ -108,6 +110,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactDateFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the date field',
@@ -143,6 +146,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactSingleChoiceFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the choice field',
@@ -153,6 +157,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactAllChoiceValues',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select a value',
@@ -186,6 +191,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactMultipleChoiceFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the choice field',
@@ -196,6 +202,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'multiOptions',
 								typeOptions: {
 									loadOptionsMethod: 'getContactAllChoiceValues',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: [],
 								description: 'Select multiple values',
@@ -229,6 +236,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactSingleUserFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the user field',
@@ -239,6 +247,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getUsers',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select a user from the list',
@@ -267,6 +276,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getContactMultipleUserFields',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: '',
 								description: 'Select the user field',
@@ -277,6 +287,7 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 								type: 'multiOptions',
 								typeOptions: {
 									loadOptionsMethod: 'getUsers',
+									loadOptionsDependsOn: ['credentials'],
 								},
 								default: [],
 								description: 'Select multiple users from the list',
@@ -292,15 +303,17 @@ const contactCustomFieldsCreateSections: INodeProperties[] = [
 /**
  * Contact Custom Fields UI sections for Update operation
  */
-const contactCustomFieldsUpdateSections: INodeProperties[] = contactCustomFieldsCreateSections.map(section => ({
-	...section,
-	displayOptions: {
-		show: {
-			resource: ['contact'],
-			operation: ['update'],
+const contactCustomFieldsUpdateSections: INodeProperties[] = contactCustomFieldsCreateSections.map(
+	(section) => ({
+		...section,
+		displayOptions: {
+			show: {
+				resource: ['contact'],
+				operation: ['update'],
+			},
 		},
-	},
-}));
+	}),
+);
 
 export const contactOperations: INodeProperties[] = [
 	{

@@ -52,9 +52,18 @@ function mapAccountSetupAction(action: string): { object_type: string; action: s
 		custom_field_contact_created: { object_type: 'custom_fields.contact', action: 'created' },
 		custom_field_contact_updated: { object_type: 'custom_fields.contact', action: 'updated' },
 		custom_field_contact_deleted: { object_type: 'custom_fields.contact', action: 'deleted' },
-		custom_field_opportunity_created: { object_type: 'custom_fields.opportunity', action: 'created' },
-		custom_field_opportunity_updated: { object_type: 'custom_fields.opportunity', action: 'updated' },
-		custom_field_opportunity_deleted: { object_type: 'custom_fields.opportunity', action: 'deleted' },
+		custom_field_opportunity_created: {
+			object_type: 'custom_fields.opportunity',
+			action: 'created',
+		},
+		custom_field_opportunity_updated: {
+			object_type: 'custom_fields.opportunity',
+			action: 'updated',
+		},
+		custom_field_opportunity_deleted: {
+			object_type: 'custom_fields.opportunity',
+			action: 'deleted',
+		},
 		custom_field_activity_created: { object_type: 'custom_fields.activity', action: 'created' },
 		custom_field_activity_updated: { object_type: 'custom_fields.activity', action: 'updated' },
 		custom_field_activity_deleted: { object_type: 'custom_fields.activity', action: 'deleted' },
@@ -97,8 +106,7 @@ function getCustomActivityAction(eventName: string): string {
 
 function isCustomActivityEvent(eventName: string): boolean {
 	return (
-		eventName.startsWith('activity.custom_activity.') ||
-		eventName.startsWith('custom_activity.')
+		eventName.startsWith('activity.custom_activity.') || eventName.startsWith('custom_activity.')
 	);
 }
 
@@ -232,11 +240,10 @@ export function evaluateCustomActivityWebhook(
 	}
 
 	if (action === 'updated') {
-		const previousStatus = (
+		const previousStatus =
 			getStatusValue(eventPreviousData?.status) ??
 			getPreviousStatusFromPayload(payload) ??
-			getStatusValue(cachedStatus)
-		);
+			getStatusValue(cachedStatus);
 		return {
 			shouldEmit: previousStatus === 'draft' && currentStatus === 'published',
 			activityId,
@@ -247,7 +254,10 @@ export function evaluateCustomActivityWebhook(
 	return { shouldEmit: false, activityId, currentStatus };
 }
 
-function buildEventsArray(triggerOn: string, actions: string[]): Array<{ object_type: string; action: string }> {
+function buildEventsArray(
+	triggerOn: string,
+	actions: string[],
+): Array<{ object_type: string; action: string }> {
 	const events: Array<{ object_type: string; action: string }> = [];
 
 	switch (triggerOn) {
@@ -937,7 +947,11 @@ export class CloseTrigger implements INodeType {
 				}
 
 				try {
-					const webhook = await closeApiRequest.call(this, 'GET', `/webhook/${webhookData.webhookId}`);
+					const webhook = await closeApiRequest.call(
+						this,
+						'GET',
+						`/webhook/${webhookData.webhookId}`,
+					);
 
 					const currentUrl = this.getNodeWebhookUrl('default');
 					if (currentUrl && webhook.url !== currentUrl) {
@@ -950,7 +964,9 @@ export class CloseTrigger implements INodeType {
 					}
 
 					if (webhook.status === 'paused') {
-						await closeApiRequest.call(this, 'PUT', `/webhook/${webhookData.webhookId}/`, { status: 'active' });
+						await closeApiRequest.call(this, 'PUT', `/webhook/${webhookData.webhookId}/`, {
+							status: 'active',
+						});
 					}
 
 					return true;
@@ -965,10 +981,13 @@ export class CloseTrigger implements INodeType {
 				const triggerOn = this.getNodeParameter('event') as string;
 
 				// Convert event name to camelCase for parameter name
-				const actionsParam = triggerOn
-					.split('_')
-					.map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
-					.join('') + 'Actions';
+				const actionsParam =
+					triggerOn
+						.split('_')
+						.map((word, index) =>
+							index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1),
+						)
+						.join('') + 'Actions';
 
 				let selectedActions: string[] = [];
 
@@ -993,7 +1012,10 @@ export class CloseTrigger implements INodeType {
 						responseData = await postWebhook();
 					} catch (error) {
 						const errorMessage = error instanceof Error ? error.message : '';
-						const duplicateIds = Array.from(errorMessage.matchAll(/whsub_[A-Za-z0-9]+/g), (m) => m[0]);
+						const duplicateIds = Array.from(
+							errorMessage.matchAll(/whsub_[A-Za-z0-9]+/g),
+							(m) => m[0],
+						);
 						if (duplicateIds.length === 0) {
 							throw error;
 						}
@@ -1015,10 +1037,7 @@ export class CloseTrigger implements INodeType {
 					return true;
 				} catch (error) {
 					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-					throw new NodeOperationError(
-						this.getNode(),
-						`Failed to create webhook: ${errorMessage}`,
-					);
+					throw new NodeOperationError(this.getNode(), `Failed to create webhook: ${errorMessage}`);
 				}
 			},
 
@@ -1062,9 +1081,10 @@ export class CloseTrigger implements INodeType {
 			// Try to get rawBody from request (this is set by n8n's body-parser middleware)
 			if ((req as any).rawBody !== undefined) {
 				// rawBody can be either a Buffer or a string
-				bodyString = typeof (req as any).rawBody === 'string'
-					? (req as any).rawBody
-					: (req as any).rawBody.toString();
+				bodyString =
+					typeof (req as any).rawBody === 'string'
+						? (req as any).rawBody
+						: (req as any).rawBody.toString();
 			}
 			// Fallback: try body as string
 			else if (typeof (req as any).body === 'string') {
@@ -1095,7 +1115,8 @@ export class CloseTrigger implements INodeType {
 		const eventName = getEventName(payload);
 
 		if (isCustomActivityEvent(eventName)) {
-			const statusByActivityId = (webhookData.customActivityStatusById as Record<string, string>) || {};
+			const statusByActivityId =
+				(webhookData.customActivityStatusById as Record<string, string>) || {};
 			const eventData = getEventData(payload);
 			const activityId = typeof eventData?.id === 'string' ? eventData.id : undefined;
 			const cachedStatus = activityId ? statusByActivityId[activityId] : undefined;
@@ -1110,10 +1131,7 @@ export class CloseTrigger implements INodeType {
 				// Close may emit a draft update first and skip a dedicated publish update.
 				// Poll the activity status briefly to emit as soon as it is actually submitted.
 				if (evaluation.activityId) {
-					const isNowPublished = await waitForCustomActivityPublished(
-						this,
-						evaluation.activityId,
-					);
+					const isNowPublished = await waitForCustomActivityPublished(this, evaluation.activityId);
 					if (isNowPublished) {
 						const freshActivity = await fetchCustomActivity(this, evaluation.activityId);
 						if (freshActivity) {

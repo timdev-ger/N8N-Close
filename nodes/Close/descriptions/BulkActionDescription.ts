@@ -220,7 +220,8 @@ export const bulkActionFields: INodeProperties[] = [
 				operation: ['createEmail'],
 			},
 		},
-		description: 'Whether to use the primary contact email per lead, or the first email per contact',
+		description:
+			'Whether to use the primary contact email per lead, or the first email per contact',
 	},
 	{
 		...sQueryField,
@@ -286,7 +287,8 @@ export const bulkActionFields: INodeProperties[] = [
 				editType: ['set_lead_status'],
 			},
 		},
-		description: 'Lead status to assign. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description:
+			'Lead status to assign. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Custom Field ID',

@@ -10,7 +10,11 @@ import type {
 } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 
-import { closeApiRequest, closeApiRequestAllItems, convertPlainTextToHTML } from './GenericFunctions';
+import {
+	closeApiRequest,
+	closeApiRequestAllItems,
+	convertPlainTextToHTML,
+} from './GenericFunctions';
 
 import { leadFields, leadOperations } from './descriptions/LeadDescription';
 
@@ -18,7 +22,10 @@ import { leadStatusFields, leadStatusOperations } from './descriptions/LeadStatu
 
 import { opportunityFields, opportunityOperations } from './descriptions/OpportunityDescription';
 
-import { opportunityStatusFields, opportunityStatusOperations, } from './descriptions/OpportunityStatusDescription';
+import {
+	opportunityStatusFields,
+	opportunityStatusOperations,
+} from './descriptions/OpportunityStatusDescription';
 
 import { taskFields, taskOperations } from './descriptions/TaskDescription';
 
@@ -32,7 +39,10 @@ import { meetingFields, meetingOperations } from './descriptions/MeetingDescript
 
 import { smsFields, smsOperations } from './descriptions/SmsDescription';
 
-import { customActivityFields, customActivityOperations, } from './descriptions/CustomActivityDescription';
+import {
+	customActivityFields,
+	customActivityOperations,
+} from './descriptions/CustomActivityDescription';
 
 import { contactFields, contactOperations } from './descriptions/ContactDescription';
 
@@ -42,7 +52,10 @@ import { bulkActionFields, bulkActionOperations } from './descriptions/BulkActio
 
 import { exportFields, exportOperations } from './descriptions/ExportDescription';
 
-import { fieldEnrichmentFields, fieldEnrichmentOperations } from './descriptions/FieldEnrichmentDescription';
+import {
+	fieldEnrichmentFields,
+	fieldEnrichmentOperations,
+} from './descriptions/FieldEnrichmentDescription';
 
 import {
 	constructContactCustomFieldsPayload,
@@ -247,7 +260,6 @@ export class Close implements INodeType {
 				return returnData;
 			},
 
-
 			async getSmartViews(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				const returnData: INodePropertyOptions[] = [];
 				const views = await closeApiRequest.call(this, 'GET', '/saved_search/');
@@ -343,23 +355,33 @@ export class Close implements INodeType {
 				return customFieldsLoadMethods.getContactDateFields(this);
 			},
 
-			async getContactSingleChoiceFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getContactSingleChoiceFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customFieldsLoadMethods.getContactSingleChoiceFields(this);
 			},
 
-			async getContactMultipleChoiceFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getContactMultipleChoiceFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customFieldsLoadMethods.getContactMultipleChoiceFields(this);
 			},
 
-			async getContactAllChoiceValues(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getContactAllChoiceValues(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customFieldsLoadMethods.getContactAllChoiceValues(this);
 			},
 
-			async getContactSingleUserFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getContactSingleUserFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customFieldsLoadMethods.getContactSingleUserFields(this);
 			},
 
-			async getContactMultipleUserFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getContactMultipleUserFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customFieldsLoadMethods.getContactMultipleUserFields(this);
 			},
 
@@ -376,39 +398,57 @@ export class Close implements INodeType {
 			},
 
 			// Custom Activity Custom Fields Load Methods
-			async getCustomActivityTextFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityTextFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityTextFields(this);
 			},
 
-			async getCustomActivityRichTextFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityRichTextFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityRichTextFields(this);
 			},
 
-			async getCustomActivityNumberFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityNumberFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityNumberFields(this);
 			},
 
-			async getCustomActivityDateFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityDateFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityDateFields(this);
 			},
 
-			async getCustomActivitySingleChoiceFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivitySingleChoiceFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivitySingleChoiceFields(this);
 			},
 
-			async getCustomActivityMultipleChoiceFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityMultipleChoiceFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityMultipleChoiceFields(this);
 			},
 
-			async getCustomActivityAllChoiceValues(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityAllChoiceValues(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityAllChoiceValues(this);
 			},
 
-			async getCustomActivitySingleUserFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivitySingleUserFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivitySingleUserFields(this);
 			},
 
-			async getCustomActivityMultipleUserFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			async getCustomActivityMultipleUserFields(
+				this: ILoadOptionsFunctions,
+			): Promise<INodePropertyOptions[]> {
 				return customActivityCustomFieldsLoadMethods.getCustomActivityMultipleUserFields(this);
 			},
 		},
@@ -474,47 +514,53 @@ export class Close implements INodeType {
 						};
 
 						if (contacts.contactsValues?.length) {
-							body.contacts = await Promise.all(contacts.contactsValues.map(async (contact: any) => {
-								const contactObj: JsonObject = {};
-								if (contact.name) contactObj.name = contact.name;
-								if (contact.email) contactObj.emails = [{ type: 'office', email: contact.email }];
+							body.contacts = await Promise.all(
+								contacts.contactsValues.map(async (contact: any) => {
+									const contactObj: JsonObject = {};
+									if (contact.name) contactObj.name = contact.name;
+									if (contact.email) contactObj.emails = [{ type: 'office', email: contact.email }];
 
-								// Handle phones array with both office and mobile numbers
-								const phones: Array<{ type: string; phone: string }> = [];
-								if (contact.phone) {
-									phones.push({ type: 'office', phone: contact.phone });
-								}
-								if (contact.mobilePhone) {
-									phones.push({ type: 'mobile', phone: contact.mobilePhone });
-								}
-								if (phones.length > 0) {
-									contactObj.phones = phones;
-								}
-
-								if (contact.title) contactObj.title = contact.title;
-
-								// Add custom fields for contact if provided
-								const hasCustomFields =
-									contact.contactCustomTextFields?.textFields?.length ||
-									contact.contactCustomNumberFields?.numberFields?.length ||
-									contact.contactCustomDateFields?.dateFields?.length ||
-									contact.contactCustomChoiceSingleFields?.choiceSingleFields?.length ||
-									contact.contactCustomChoiceMultipleFields?.choiceMultipleFields?.length ||
-									contact.contactCustomUserSingleFields?.userSingleFields?.length ||
-									contact.contactCustomUserMultipleFields?.userMultipleFields?.length;
-
-								if (hasCustomFields) {
-									try {
-										const contactFields = await customFieldsLoadMethods.getCachedContactCustomFields(this);
-										const contactCustomFieldsPayload = constructContactCustomFieldsPayload(contact, contactFields);
-										Object.assign(contactObj, contactCustomFieldsPayload);
-									} catch (error) {
-										console.error('Error processing contact custom fields:', error);
+									// Handle phones array with both office and mobile numbers
+									const phones: Array<{ type: string; phone: string }> = [];
+									if (contact.phone) {
+										phones.push({ type: 'office', phone: contact.phone });
 									}
-								}
+									if (contact.mobilePhone) {
+										phones.push({ type: 'mobile', phone: contact.mobilePhone });
+									}
+									if (phones.length > 0) {
+										contactObj.phones = phones;
+									}
 
-								return removeNullishValues(contactObj);
-							}));
+									if (contact.title) contactObj.title = contact.title;
+
+									// Add custom fields for contact if provided
+									const hasCustomFields =
+										contact.contactCustomTextFields?.textFields?.length ||
+										contact.contactCustomNumberFields?.numberFields?.length ||
+										contact.contactCustomDateFields?.dateFields?.length ||
+										contact.contactCustomChoiceSingleFields?.choiceSingleFields?.length ||
+										contact.contactCustomChoiceMultipleFields?.choiceMultipleFields?.length ||
+										contact.contactCustomUserSingleFields?.userSingleFields?.length ||
+										contact.contactCustomUserMultipleFields?.userMultipleFields?.length;
+
+									if (hasCustomFields) {
+										try {
+											const contactFields =
+												await customFieldsLoadMethods.getCachedContactCustomFields(this);
+											const contactCustomFieldsPayload = constructContactCustomFieldsPayload(
+												contact,
+												contactFields,
+											);
+											Object.assign(contactObj, contactCustomFieldsPayload);
+										} catch (error) {
+											console.error('Error processing contact custom fields:', error);
+										}
+									}
+
+									return removeNullishValues(contactObj);
+								}),
+							);
 						}
 
 						// Add address if provided
@@ -526,7 +572,14 @@ export class Close implements INodeType {
 							country?: string;
 						};
 
-						if (address && (address.street || address.city || address.state || address.zipcode || address.country)) {
+						if (
+							address &&
+							(address.street ||
+								address.city ||
+								address.state ||
+								address.zipcode ||
+								address.country)
+						) {
 							const addressesArray: JsonObject[] = [];
 							const addressObj: JsonObject = { type: 'office' };
 
@@ -570,7 +623,10 @@ export class Close implements INodeType {
 							// If we have custom fields, process them
 							if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 								const fields = await customFieldsLoadMethods.getCachedCustomFields(this);
-								const customFieldsPayload = constructCustomFieldsPayload({ customFields: customFieldsData }, fields);
+								const customFieldsPayload = constructCustomFieldsPayload(
+									{ customFields: customFieldsData },
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -748,9 +804,23 @@ export class Close implements INodeType {
 									},
 									// Request all fields to get complete lead data
 									_fields: {
-										lead: ['id', 'display_name', 'name', 'description', 'url', 'status_id', 'status_label',
-											   'contacts', 'addresses', 'created_by', 'date_created', 'date_updated',
-											   'organization_id', 'tasks', 'opportunities'],
+										lead: [
+											'id',
+											'display_name',
+											'name',
+											'description',
+											'url',
+											'status_id',
+											'status_label',
+											'contacts',
+											'addresses',
+											'created_by',
+											'date_created',
+											'date_updated',
+											'organization_id',
+											'tasks',
+											'opportunities',
+										],
 									},
 								};
 
@@ -770,7 +840,12 @@ export class Close implements INodeType {
 										{},
 									);
 								} else {
-									responseData = await closeApiRequest.call(this, 'POST', '/data/search/', searchBody);
+									responseData = await closeApiRequest.call(
+										this,
+										'POST',
+										'/data/search/',
+										searchBody,
+									);
 									responseData = responseData.data;
 								}
 							}
@@ -847,53 +922,59 @@ export class Close implements INodeType {
 							const existingContacts = existingLead.contacts || [];
 
 							// Map contacts by position: first contact updates first existing contact, etc.
-							body.contacts = await Promise.all(contacts.contactsValues.map(async (contact: any, index: number) => {
-								const contactObj: JsonObject = {};
+							body.contacts = await Promise.all(
+								contacts.contactsValues.map(async (contact: any, index: number) => {
+									const contactObj: JsonObject = {};
 
-								// If there's an existing contact at this position, include its ID for update
-								if (existingContacts[index]?.id) {
-									contactObj.id = existingContacts[index].id;
-								}
-
-								if (contact.name) contactObj.name = contact.name;
-								if (contact.email) contactObj.emails = [{ type: 'office', email: contact.email }];
-
-								// Handle phones array with both office and mobile numbers
-								const phones: Array<{ type: string; phone: string }> = [];
-								if (contact.phone) {
-									phones.push({ type: 'office', phone: contact.phone });
-								}
-								if (contact.mobilePhone) {
-									phones.push({ type: 'mobile', phone: contact.mobilePhone });
-								}
-								if (phones.length > 0) {
-									contactObj.phones = phones;
-								}
-
-								if (contact.title) contactObj.title = contact.title;
-
-								// Add custom fields for contact if provided
-								const hasCustomFields =
-									contact.contactCustomTextFields?.textFields?.length ||
-									contact.contactCustomNumberFields?.numberFields?.length ||
-									contact.contactCustomDateFields?.dateFields?.length ||
-									contact.contactCustomChoiceSingleFields?.choiceSingleFields?.length ||
-									contact.contactCustomChoiceMultipleFields?.choiceMultipleFields?.length ||
-									contact.contactCustomUserSingleFields?.userSingleFields?.length ||
-									contact.contactCustomUserMultipleFields?.userMultipleFields?.length;
-
-								if (hasCustomFields) {
-									try {
-										const contactFields = await customFieldsLoadMethods.getCachedContactCustomFields(this);
-										const contactCustomFieldsPayload = constructContactCustomFieldsPayload(contact, contactFields);
-										Object.assign(contactObj, contactCustomFieldsPayload);
-									} catch (error) {
-										console.error('Error processing contact custom fields:', error);
+									// If there's an existing contact at this position, include its ID for update
+									if (existingContacts[index]?.id) {
+										contactObj.id = existingContacts[index].id;
 									}
-								}
 
-								return removeNullishValues(contactObj);
-							}));
+									if (contact.name) contactObj.name = contact.name;
+									if (contact.email) contactObj.emails = [{ type: 'office', email: contact.email }];
+
+									// Handle phones array with both office and mobile numbers
+									const phones: Array<{ type: string; phone: string }> = [];
+									if (contact.phone) {
+										phones.push({ type: 'office', phone: contact.phone });
+									}
+									if (contact.mobilePhone) {
+										phones.push({ type: 'mobile', phone: contact.mobilePhone });
+									}
+									if (phones.length > 0) {
+										contactObj.phones = phones;
+									}
+
+									if (contact.title) contactObj.title = contact.title;
+
+									// Add custom fields for contact if provided
+									const hasCustomFields =
+										contact.contactCustomTextFields?.textFields?.length ||
+										contact.contactCustomNumberFields?.numberFields?.length ||
+										contact.contactCustomDateFields?.dateFields?.length ||
+										contact.contactCustomChoiceSingleFields?.choiceSingleFields?.length ||
+										contact.contactCustomChoiceMultipleFields?.choiceMultipleFields?.length ||
+										contact.contactCustomUserSingleFields?.userSingleFields?.length ||
+										contact.contactCustomUserMultipleFields?.userMultipleFields?.length;
+
+									if (hasCustomFields) {
+										try {
+											const contactFields =
+												await customFieldsLoadMethods.getCachedContactCustomFields(this);
+											const contactCustomFieldsPayload = constructContactCustomFieldsPayload(
+												contact,
+												contactFields,
+											);
+											Object.assign(contactObj, contactCustomFieldsPayload);
+										} catch (error) {
+											console.error('Error processing contact custom fields:', error);
+										}
+									}
+
+									return removeNullishValues(contactObj);
+								}),
+							);
 						}
 
 						// Add address if provided
@@ -905,7 +986,14 @@ export class Close implements INodeType {
 							country?: string;
 						};
 
-						if (address && (address.street || address.city || address.state || address.zipcode || address.country)) {
+						if (
+							address &&
+							(address.street ||
+								address.city ||
+								address.state ||
+								address.zipcode ||
+								address.country)
+						) {
 							const addressesArray: JsonObject[] = [];
 							const addressObj: JsonObject = { type: 'office' };
 
@@ -949,7 +1037,10 @@ export class Close implements INodeType {
 							// If we have custom fields, process them
 							if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 								const fields = await customFieldsLoadMethods.getCachedCustomFields(this);
-								const customFieldsPayload = constructCustomFieldsPayload({ customFields: customFieldsData }, fields);
+								const customFieldsPayload = constructCustomFieldsPayload(
+									{ customFields: customFieldsData },
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -1070,31 +1161,43 @@ export class Close implements INodeType {
 
 						// Add emails if provided
 						if (additionalFields.emails) {
-							const emailsData = additionalFields.emails as { emailsValues?: Array<{ type: string; email: string }> };
+							const emailsData = additionalFields.emails as {
+								emailsValues?: Array<{ type: string; email: string }>;
+							};
 							if (emailsData.emailsValues?.length) {
 								body.emails = emailsData.emailsValues
-									.map(e => removeNullishValues({ type: e.type, email: e.email }))
-									.filter(e => hasValue(e.type) && e.type !== '' && hasValue(e.email) && e.email !== '');
+									.map((e) => removeNullishValues({ type: e.type, email: e.email }))
+									.filter(
+										(e) => hasValue(e.type) && e.type !== '' && hasValue(e.email) && e.email !== '',
+									);
 							}
 						}
 
 						// Add phones if provided
 						if (additionalFields.phones) {
-							const phonesData = additionalFields.phones as { phonesValues?: Array<{ type: string; phone: string }> };
+							const phonesData = additionalFields.phones as {
+								phonesValues?: Array<{ type: string; phone: string }>;
+							};
 							if (phonesData.phonesValues?.length) {
 								body.phones = phonesData.phonesValues
-									.map(p => removeNullishValues({ type: p.type, phone: p.phone }))
-									.filter(p => hasValue(p.type) && p.type !== '' && hasValue(p.phone) && p.phone !== '');
+									.map((p) => removeNullishValues({ type: p.type, phone: p.phone }))
+									.filter(
+										(p) => hasValue(p.type) && p.type !== '' && hasValue(p.phone) && p.phone !== '',
+									);
 							}
 						}
 
 						// Add URLs if provided
 						if (additionalFields.urls) {
-							const urlsData = additionalFields.urls as { urlsValues?: Array<{ type: string; url: string }> };
+							const urlsData = additionalFields.urls as {
+								urlsValues?: Array<{ type: string; url: string }>;
+							};
 							if (urlsData.urlsValues?.length) {
 								body.urls = urlsData.urlsValues
-									.map(u => removeNullishValues({ type: u.type, url: u.url }))
-									.filter(u => hasValue(u.type) && u.type !== '' && hasValue(u.url) && u.url !== '');
+									.map((u) => removeNullishValues({ type: u.type, url: u.url }))
+									.filter(
+										(u) => hasValue(u.type) && u.type !== '' && hasValue(u.url) && u.url !== '',
+									);
 							}
 						}
 
@@ -1102,15 +1205,24 @@ export class Close implements INodeType {
 						const customFieldsData = this.getNodeParameter('contactCustomFields', i, {}) as any;
 						if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 							try {
-								const contactFields = await customFieldsLoadMethods.getCachedContactCustomFields(this);
-								const contactCustomFieldsPayload = constructContactCustomFieldsPayload(customFieldsData, contactFields);
+								const contactFields =
+									await customFieldsLoadMethods.getCachedContactCustomFields(this);
+								const contactCustomFieldsPayload = constructContactCustomFieldsPayload(
+									customFieldsData,
+									contactFields,
+								);
 								Object.assign(body, contactCustomFieldsPayload);
 							} catch (error) {
 								console.error('Error processing contact custom fields:', error);
 							}
 						}
 
-						responseData = await closeApiRequest.call(this, 'POST', '/contact/', removeNullishValues(body));
+						responseData = await closeApiRequest.call(
+							this,
+							'POST',
+							'/contact/',
+							removeNullishValues(body),
+						);
 					}
 
 					if (operation === 'delete') {
@@ -1191,31 +1303,43 @@ export class Close implements INodeType {
 
 						// Add emails if provided
 						if (updateFields.emails) {
-							const emailsData = updateFields.emails as { emailsValues?: Array<{ type: string; email: string }> };
+							const emailsData = updateFields.emails as {
+								emailsValues?: Array<{ type: string; email: string }>;
+							};
 							if (emailsData.emailsValues?.length) {
 								body.emails = emailsData.emailsValues
-									.map(e => removeNullishValues({ type: e.type, email: e.email }))
-									.filter(e => hasValue(e.type) && e.type !== '' && hasValue(e.email) && e.email !== '');
+									.map((e) => removeNullishValues({ type: e.type, email: e.email }))
+									.filter(
+										(e) => hasValue(e.type) && e.type !== '' && hasValue(e.email) && e.email !== '',
+									);
 							}
 						}
 
 						// Add phones if provided
 						if (updateFields.phones) {
-							const phonesData = updateFields.phones as { phonesValues?: Array<{ type: string; phone: string }> };
+							const phonesData = updateFields.phones as {
+								phonesValues?: Array<{ type: string; phone: string }>;
+							};
 							if (phonesData.phonesValues?.length) {
 								body.phones = phonesData.phonesValues
-									.map(p => removeNullishValues({ type: p.type, phone: p.phone }))
-									.filter(p => hasValue(p.type) && p.type !== '' && hasValue(p.phone) && p.phone !== '');
+									.map((p) => removeNullishValues({ type: p.type, phone: p.phone }))
+									.filter(
+										(p) => hasValue(p.type) && p.type !== '' && hasValue(p.phone) && p.phone !== '',
+									);
 							}
 						}
 
 						// Add URLs if provided
 						if (updateFields.urls) {
-							const urlsData = updateFields.urls as { urlsValues?: Array<{ type: string; url: string }> };
+							const urlsData = updateFields.urls as {
+								urlsValues?: Array<{ type: string; url: string }>;
+							};
 							if (urlsData.urlsValues?.length) {
 								body.urls = urlsData.urlsValues
-									.map(u => removeNullishValues({ type: u.type, url: u.url }))
-									.filter(u => hasValue(u.type) && u.type !== '' && hasValue(u.url) && u.url !== '');
+									.map((u) => removeNullishValues({ type: u.type, url: u.url }))
+									.filter(
+										(u) => hasValue(u.type) && u.type !== '' && hasValue(u.url) && u.url !== '',
+									);
 							}
 						}
 
@@ -1223,15 +1347,24 @@ export class Close implements INodeType {
 						const customFieldsData = this.getNodeParameter('contactCustomFields', i, {}) as any;
 						if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 							try {
-								const contactFields = await customFieldsLoadMethods.getCachedContactCustomFields(this);
-								const contactCustomFieldsPayload = constructContactCustomFieldsPayload(customFieldsData, contactFields);
+								const contactFields =
+									await customFieldsLoadMethods.getCachedContactCustomFields(this);
+								const contactCustomFieldsPayload = constructContactCustomFieldsPayload(
+									customFieldsData,
+									contactFields,
+								);
 								Object.assign(body, contactCustomFieldsPayload);
 							} catch (error) {
 								console.error('Error processing contact custom fields:', error);
 							}
 						}
 
-						responseData = await closeApiRequest.call(this, 'PUT', `/contact/${contactId}/`, removeNullishValues(body));
+						responseData = await closeApiRequest.call(
+							this,
+							'PUT',
+							`/contact/${contactId}/`,
+							removeNullishValues(body),
+						);
 					}
 				}
 
@@ -1281,7 +1414,10 @@ export class Close implements INodeType {
 							// If we have custom fields, process them
 							if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 								const fields = await customFieldsLoadMethods.getCachedCustomFields(this);
-								const customFieldsPayload = constructCustomFieldsPayload({ customFields: customFieldsData }, fields);
+								const customFieldsPayload = constructCustomFieldsPayload(
+									{ customFields: customFieldsData },
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -1315,12 +1451,20 @@ export class Close implements INodeType {
 						const statusId = this.getNodeParameter('statusId', i, '') as string;
 						const assignedTo = this.getNodeParameter('assignedTo', i, '') as string;
 						const statusType = this.getNodeParameter('statusType', i, '') as string;
-						const additionalFilters = this.getNodeParameter('additionalFilters', i, {}) as JsonObject;
+						const additionalFilters = this.getNodeParameter(
+							'additionalFilters',
+							i,
+							{},
+						) as JsonObject;
 						const returnAll = this.getNodeParameter('returnAll', i);
 
 						// If Opportunity ID is provided, get specific opportunity
 						if (opportunityId) {
-							responseData = await closeApiRequest.call(this, 'GET', `/opportunity/${opportunityId}/`);
+							responseData = await closeApiRequest.call(
+								this,
+								'GET',
+								`/opportunity/${opportunityId}/`,
+							);
 						} else {
 							if (leadId) {
 								qs.lead_id = leadId;
@@ -1356,7 +1500,6 @@ export class Close implements INodeType {
 									qs,
 								);
 							} else {
-
 								qs._limit = this.getNodeParameter('limit', i);
 								responseData = await closeApiRequest.call(this, 'GET', '/opportunity/', {}, qs);
 								responseData = responseData.data;
@@ -1364,8 +1507,9 @@ export class Close implements INodeType {
 
 							// Apply client-side confidence filtering if specified
 							if (additionalFilters.confidence !== undefined && Array.isArray(responseData)) {
-								responseData = responseData.filter((opportunity: JsonObject) =>
-									opportunity.confidence === additionalFilters.confidence
+								responseData = responseData.filter(
+									(opportunity: JsonObject) =>
+										opportunity.confidence === additionalFilters.confidence,
 								);
 							}
 						}
@@ -1413,7 +1557,10 @@ export class Close implements INodeType {
 							// If we have custom fields, process them
 							if (customFieldsData && Object.keys(customFieldsData).length > 0) {
 								const fields = await customFieldsLoadMethods.getCachedCustomFields(this);
-								const customFieldsPayload = constructCustomFieldsPayload({ customFields: customFieldsData }, fields);
+								const customFieldsPayload = constructCustomFieldsPayload(
+									{ customFields: customFieldsData },
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -1677,7 +1824,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/task/', {}, qs);
 							responseData = responseData.data;
@@ -1860,7 +2006,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/note/', {}, qs);
 							responseData = responseData.data;
@@ -1986,7 +2131,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/', {}, qs);
 							responseData = responseData.data;
@@ -2151,7 +2295,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/email/', {}, qs);
 							responseData = responseData.data;
@@ -2283,7 +2426,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/meeting/', {}, qs);
 							responseData = responseData.data;
@@ -2296,7 +2438,9 @@ export class Close implements INodeType {
 
 								// Filter by activity_at if specified
 								if (useActivityAt) {
-									const activityAt = meeting.activity_at ? new Date(meeting.activity_at).getTime() : null;
+									const activityAt = meeting.activity_at
+										? new Date(meeting.activity_at).getTime()
+										: null;
 
 									if (activityAtGt && activityAt) {
 										const filterDate = new Date(activityAtGt).getTime();
@@ -2309,7 +2453,9 @@ export class Close implements INodeType {
 									}
 								} else {
 									// Filter by date_created if activity_at filters are not used
-									const dateCreated = meeting.date_created ? new Date(meeting.date_created).getTime() : null;
+									const dateCreated = meeting.date_created
+										? new Date(meeting.date_created).getTime()
+										: null;
 
 									if (dateCreatedGt && dateCreated) {
 										const filterDate = new Date(dateCreatedGt).getTime();
@@ -2471,7 +2617,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/sms/', {}, qs);
 							responseData = responseData.data;
@@ -2514,12 +2659,22 @@ export class Close implements INodeType {
 						// Add custom fields from the new structure
 						try {
 							// Collect custom fields data from the new dynamic structure
-							const customActivityCustomFieldsData = this.getNodeParameter('customActivityCustomFields', i, {}) as any;
+							const customActivityCustomFieldsData = this.getNodeParameter(
+								'customActivityCustomFields',
+								i,
+								{},
+							) as any;
 
 							// If we have custom fields, process them
-							if (customActivityCustomFieldsData && Object.keys(customActivityCustomFieldsData).length > 0) {
+							if (
+								customActivityCustomFieldsData &&
+								Object.keys(customActivityCustomFieldsData).length > 0
+							) {
 								const fields = await getCachedCustomActivityCustomFields(this);
-								const customFieldsPayload = constructCustomActivityCustomFieldsPayload(customActivityCustomFieldsData, fields);
+								const customFieldsPayload = constructCustomActivityCustomFieldsPayload(
+									customActivityCustomFieldsData,
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -2534,7 +2689,11 @@ export class Close implements INodeType {
 
 					if (operation === 'update') {
 						const activityId = this.getNodeParameter('activityId', i) as string;
-						const customActivityTypeId = this.getNodeParameter('customActivityTypeId', i, '') as string;
+						const customActivityTypeId = this.getNodeParameter(
+							'customActivityTypeId',
+							i,
+							'',
+						) as string;
 						const status = this.getNodeParameter('status', i, '') as string;
 
 						if (!activityId) {
@@ -2556,12 +2715,22 @@ export class Close implements INodeType {
 						// Add custom fields from the new structure
 						try {
 							// Collect custom fields data from the new dynamic structure
-							const customActivityCustomFieldsData = this.getNodeParameter('customActivityCustomFields', i, {}) as any;
+							const customActivityCustomFieldsData = this.getNodeParameter(
+								'customActivityCustomFields',
+								i,
+								{},
+							) as any;
 
 							// If we have custom fields, process them
-							if (customActivityCustomFieldsData && Object.keys(customActivityCustomFieldsData).length > 0) {
+							if (
+								customActivityCustomFieldsData &&
+								Object.keys(customActivityCustomFieldsData).length > 0
+							) {
 								const fields = await getCachedCustomActivityCustomFields(this);
-								const customFieldsPayload = constructCustomActivityCustomFieldsPayload(customActivityCustomFieldsData, fields);
+								const customFieldsPayload = constructCustomActivityCustomFieldsPayload(
+									customActivityCustomFieldsData,
+									fields,
+								);
 
 								// Merge the custom fields payload into the body
 								Object.assign(body, customFieldsPayload);
@@ -2571,7 +2740,12 @@ export class Close implements INodeType {
 							// Continue with execution - don't fail the entire operation
 						}
 
-						responseData = await closeApiRequest.call(this, 'PUT', `/activity/custom/${activityId}/`, body);
+						responseData = await closeApiRequest.call(
+							this,
+							'PUT',
+							`/activity/custom/${activityId}/`,
+							body,
+						);
 					}
 
 					if (operation === 'get') {
@@ -2583,7 +2757,11 @@ export class Close implements INodeType {
 							);
 						}
 
-						responseData = await closeApiRequest.call(this, 'GET', `/activity/custom/${activityId}/`);
+						responseData = await closeApiRequest.call(
+							this,
+							'GET',
+							`/activity/custom/${activityId}/`,
+						);
 					}
 
 					if (operation === 'delete') {
@@ -2595,19 +2773,31 @@ export class Close implements INodeType {
 							);
 						}
 
-						responseData = await closeApiRequest.call(this, 'DELETE', `/activity/custom/${activityId}/`);
+						responseData = await closeApiRequest.call(
+							this,
+							'DELETE',
+							`/activity/custom/${activityId}/`,
+						);
 					}
 
 					if (operation === 'find') {
 						const leadId = this.getNodeParameter('leadId', i, '') as string;
-						const customActivityTypeId = this.getNodeParameter('customActivityTypeId', i, '') as string;
+						const customActivityTypeId = this.getNodeParameter(
+							'customActivityTypeId',
+							i,
+							'',
+						) as string;
 						const customActivityId = this.getNodeParameter('customActivityId', i, '') as string;
 						const returnAll = this.getNodeParameter('returnAll', i);
 						const dateCreated = this.getNodeParameter('dateCreated', i, '') as string;
 
 						// If searching for a specific custom activity by ID, use the specific endpoint
 						if (customActivityId) {
-							responseData = await closeApiRequest.call(this, 'GET', `/activity/custom/${customActivityId}/`);
+							responseData = await closeApiRequest.call(
+								this,
+								'GET',
+								`/activity/custom/${customActivityId}/`,
+							);
 							const executionData = this.helpers.constructExecutionMetaData(
 								this.helpers.returnJsonArray([responseData] as JsonObject[]),
 								{ itemData: { item: i } },
@@ -2635,7 +2825,6 @@ export class Close implements INodeType {
 								qs,
 							);
 						} else {
-
 							qs._limit = this.getNodeParameter('limit', i);
 							responseData = await closeApiRequest.call(this, 'GET', '/activity/', {}, qs);
 							responseData = responseData.data;
@@ -2643,8 +2832,8 @@ export class Close implements INodeType {
 
 						// Apply client-side filtering by custom activity type if specified
 						if (customActivityTypeId && Array.isArray(responseData)) {
-							responseData = responseData.filter((activity: JsonObject) =>
-								activity.custom_activity_type_id === customActivityTypeId
+							responseData = responseData.filter(
+								(activity: JsonObject) => activity.custom_activity_type_id === customActivityTypeId,
 							);
 						}
 					}
@@ -2713,8 +2902,10 @@ export class Close implements INodeType {
 						}
 
 						const body: JsonObject = {};
-						if (hasValue(updateFields.name) && updateFields.name !== '') body.name = updateFields.name;
-						if (hasValue(updateFields.status) && updateFields.status !== '') body.status = updateFields.status;
+						if (hasValue(updateFields.name) && updateFields.name !== '')
+							body.name = updateFields.name;
+						if (hasValue(updateFields.status) && updateFields.status !== '')
+							body.status = updateFields.status;
 						try {
 							const schedule = parseJsonParam(updateFields.schedule, 'Schedule');
 							if (schedule !== undefined) body.schedule = schedule as JsonObject;
@@ -2724,7 +2915,12 @@ export class Close implements INodeType {
 							throw new NodeOperationError(this.getNode(), (error as Error).message);
 						}
 
-						responseData = await closeApiRequest.call(this, 'PUT', `/sequence/${sequenceId}/`, body);
+						responseData = await closeApiRequest.call(
+							this,
+							'PUT',
+							`/sequence/${sequenceId}/`,
+							body,
+						);
 					}
 
 					if (operation === 'delete') {
@@ -2733,7 +2929,10 @@ export class Close implements INodeType {
 							throw new NodeOperationError(this.getNode(), 'Sequence ID is required');
 						}
 						responseData = await closeApiRequest.call(this, 'DELETE', `/sequence/${sequenceId}/`);
-						if (!responseData || (typeof responseData === 'object' && Object.keys(responseData).length === 0)) {
+						if (
+							!responseData ||
+							(typeof responseData === 'object' && Object.keys(responseData).length === 0)
+						) {
 							responseData = { success: true, id: sequenceId };
 						}
 					}
@@ -2745,9 +2944,20 @@ export class Close implements INodeType {
 						const senderAccountId = this.getNodeParameter('senderAccountId', i) as string;
 						const senderName = this.getNodeParameter('senderName', i) as string;
 						const senderEmail = this.getNodeParameter('senderEmail', i) as string;
-						const additional = this.getNodeParameter('subscribeAdditionalFields', i, {}) as JsonObject;
+						const additional = this.getNodeParameter(
+							'subscribeAdditionalFields',
+							i,
+							{},
+						) as JsonObject;
 
-						if (!sequenceId || !contactId || !contactEmail || !senderAccountId || !senderName || !senderEmail) {
+						if (
+							!sequenceId ||
+							!contactId ||
+							!contactEmail ||
+							!senderAccountId ||
+							!senderName ||
+							!senderEmail
+						) {
 							throw new NodeOperationError(
 								this.getNode(),
 								'Sequence ID, Contact ID, Contact Email, Sender Account ID, Sender Name, and Sender Email are all required to subscribe a contact',
@@ -2770,7 +2980,12 @@ export class Close implements INodeType {
 								.filter(Boolean);
 						}
 
-						responseData = await closeApiRequest.call(this, 'POST', '/sequence_subscription/', body);
+						responseData = await closeApiRequest.call(
+							this,
+							'POST',
+							'/sequence_subscription/',
+							body,
+						);
 					}
 
 					if (operation === 'getSubscription') {
@@ -2893,7 +3108,8 @@ export class Close implements INodeType {
 							throw new NodeOperationError(this.getNode(), (error as Error).message);
 						}
 
-						if (hasValue(additional.sender) && additional.sender !== '') body.sender = additional.sender;
+						if (hasValue(additional.sender) && additional.sender !== '')
+							body.sender = additional.sender;
 						applyCommonBulkOptions(body, additional, 'Email Additional Fields');
 
 						responseData = await closeApiRequest.call(this, 'POST', '/bulk_action/email/', body);
