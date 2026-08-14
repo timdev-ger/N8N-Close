@@ -13,7 +13,7 @@
 [![npm version](https://badge.fury.io/js/n8n-nodes-close-crm.svg)](https://www.npmjs.com/package/n8n-nodes-close-crm)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-[What's New](#-whats-new-in-171) • [Installation](#-installation) • [Features](#-features) • [Credentials](#-credentials) • [Usage Examples](#-usage-examples) • [Resources](#-resources) • [Contributing](#-contributing) • [Code of Conduct](#-code-of-conduct)
+[What's New](#-whats-new-in-172) • [Installation](#-installation) • [Features](#-features) • [Credentials](#-credentials) • [Usage Examples](#-usage-examples) • [Resources](#-resources) • [Contributing](#-contributing) • [Code of Conduct](#-code-of-conduct)
 
 </div>
 
@@ -23,15 +23,13 @@
 
 This n8n community node provides comprehensive integration with **Close CRM**, a sales CRM built for high-growth companies that need to scale their sales operations.
 
-**Current Version: 1.7.0** - Adds user attribution, date backdating, missing contact types, and add/remove actions for multi-value custom fields.
+**Current Version: 1.7.2** - Adds a polling trigger for leads entering Close CRM saved searches.
 
 **What is n8n?** [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform that lets you connect different services and automate tasks.
 
-## 🆕 What's New in 1.7.1
+## 🆕 What's New in 1.7.2
 
-- **Fix**: Lead and Contact custom field dropdowns (Choice, User, Contact) now correctly refresh their options when you switch the Close CRM credential, instead of showing stale values from the previous account.
-- **Dependency updates**: Bumped `@types/node`, `@typescript-eslint/*`, `eslint`, `eslint-plugin-n8n-nodes-base`, `@swc/core`, and `prettier` to their latest compatible versions.
-- **Quality**: 197 tests green across 5 suites. All checks green: `tsc`, `eslint`, `jest`, `npm run build`.
+- **Saved Search Trigger**: Starts a workflow when a lead newly enters a selected Close CRM saved search. It tracks the full result set between polls, so a lead that leaves and later re-enters triggers again.
 
 See the [CHANGELOG](CHANGELOG.md) for complete version history.
 
